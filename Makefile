@@ -45,48 +45,10 @@ module-for-expand.o module-for-expand.import.scm: module-for-expand.scm
 module-for-expand.import.o: module-for-expand.import.scm
 	$(CSC_COMPILE_OBJECT) $(@) $(<)
 
-AM_CHICKEN_FLAGS	= -setup-mode -dynamic
-AM_CHICKEN_LDFLAGS	= -setup-mode -library -shared
-
-CSC			= csc
-CSC_COMPILE_OBJECT	= $(CSC) $(AM_CHICKEN_FLAGS) $(CHICKEN_FLAGS) -c -o
-CSC_LINK_LIBRARY	= $(CSC) $(AM_CHICKEN_LDFLAGS) $(CHICKEN_LDFLAGS) -o
-CSC_LINK_PROGRAM	= $(CSC) $(AM_CHICKEN_LDFLAGS) $(CHICKEN_LDFLAGS) -o
-
-TARGETS		= \
-	library-for-expand.so		\
-	library-for-expand.import.so	\
-	library-alpha.so		\
-	library-alpha.import.so		\
-	library-beta.so			\
-	library-beta-one.import.so	\
-	library-beta-two.import.so	\
-	program-using-alpha		\
-	program-using-beta
-
-CLEANFILES	= $(TARGETS) *.so *import.* *.o
-
-## --------------------------------------------------------------------
-
-.PHONY: all clean
-
-all: $(TARGETS)
-
-clean:
-	rm -f $(CLEANFILES)
-
-## --------------------------------------------------------------------
-
-module-for-expand.o module-for-expand.import.scm: module-for-expand.scm
-	$(CSC_COMPILE_OBJECT) $(@) $(<)
-
-module-for-expand.import.o: module-for-expand.import.scm
-	$(CSC_COMPILE_OBJECT) $(@) $(<)
-
 library-for-expand.so: module-for-expand.o
 	$(CSC_LINK_LIBRARY) $(@) $(<)
 
-library-for-expand.import.so: module-for-expand.import.scm
+library-for-expand.import.so: module-for-expand.import.o
 	$(CSC_LINK_LIBRARY) $(@) $(<)
 
 ## --------------------------------------------------------------------
