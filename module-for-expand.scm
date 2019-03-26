@@ -1,4 +1,4 @@
-;; module-alpha.scm --
+;; module-for-expand.scm --
 
 (declare (unit module-for-expand)
 	 (emit-import-library module-for-expand))

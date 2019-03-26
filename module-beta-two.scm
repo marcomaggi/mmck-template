@@ -2,17 +2,18 @@
 
 (declare (unit module-beta-two)
 	 (emit-import-library module-beta-two)
-	 (uses module-beta-one))
+	 (uses module-beta-one)
+	 (uses module-alpha))
 
 (module (module-beta-two)
-	(beta-two)
-
+	(the-func)
 	(import (scheme)
-		(module-beta-one))
-
-	(define (beta-two)
-	  (cons (beta-one) 2))
-
+		(prefix (module-beta-one) beta-one::)
+		(prefix (module-alpha) alpha::))
+	(define (the-func)
+	  (cons 'module-beta-two-the-func
+		(beta-one::the-func)
+		(alpha::the-func)))
 	#| end of module |# )
 
 ;;; end of file
