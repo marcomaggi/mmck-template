@@ -46,3 +46,5 @@ autotools/
 compiled/
 meta/autotools/
 *.import.scm
+program-using-alpha
+program-using-beta
