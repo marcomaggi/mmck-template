@@ -1,9 +1,9 @@
 ;; program-using-alpha.scm --
 
-(declare (uses (library-alpha)))
+(declare (uses module-alpha))
 
 (import (scheme)
-	(prefix (library-alpha) alpha::)
+	(prefix module-alpha alpha::)
 	(chicken pretty-print))
 
 (define (main . args)

@@ -1,12 +1,12 @@
 ;; program-using-beta.scm --
 
-(declare (uses (library-beta)))
+(declare (uses module-beta-two))
 
 (import (scheme)
-	(prefix (library-beta) beta::)
+	(prefix module-beta-two beta-two::)
 	(chicken pretty-print))
 
 (define (main . args)
-  (pretty-print (beta::the-func)))
+  (pretty-print (beta-two::the-func)))
 
 ;;; end of file

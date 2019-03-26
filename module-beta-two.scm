@@ -8,10 +8,10 @@
 (module (module-beta-two)
 	(the-func)
 	(import (scheme)
-		(prefix (module-beta-one) beta-one::)
-		(prefix (module-alpha) alpha::))
+		(prefix module-beta-one beta-one::)
+		(prefix module-alpha    alpha::))
 	(define (the-func)
-	  (cons 'module-beta-two-the-func
+	  (list 'module-beta-two-the-func
 		(beta-one::the-func)
 		(alpha::the-func)))
 	#| end of module |# )
