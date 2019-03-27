@@ -246,12 +246,24 @@ module-beta-two.import.so: module-beta-two.import.scm
 
 PROGRAM_BETA_OBJECTS_DEPS	= library-beta.so module-beta-one.import.so module-beta-two.import.so
 
-program-using-beta-module-main.o: program-using-beta-module-main.scm $(PROGRAM_BETA_OBJECTS_DEPS)
+program-using-beta-module-one.o: program-using-beta-module-one.scm $(PROGRAM_BETA_OBJECTS_DEPS)
 	$(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
 	@echo
 
-program-using-beta: program-using-beta-module-main.o library-beta.so
-	$(CSC_LINK_PROGRAM) $(@) $(<)
+program-using-beta-module-main.o: program-using-beta-module-main.scm $(PROGRAM_BETA_OBJECTS_DEPS) program-using-beta-module-one.import.so
+	$(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
+	@echo
+
+program-using-beta: program-using-beta-module-main.o program-using-beta-module-one.o
+	$(CSC_LINK_PROGRAM) $(@) $(^)
+	@echo
+
+## --------------------------------------------------------------------
+
+program-using-beta-module-one.import.scm: program-using-beta-module-one.o
+
+program-using-beta-module-one.import.so: program-using-beta-module-one.import.scm
+	$(CSC_COMPILE_LIBRARY) $(@) $(<)
 	@echo
 
 ### end of file
