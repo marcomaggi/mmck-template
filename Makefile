@@ -122,6 +122,11 @@ CSC_COMPILE_OBJECT_SHARED	= $(CSC) $(AM_CHICKEN_FLAGS_OBJECT_SHARED) -c -o
 #
 CSC_COMPILE_OBJECT_STATIC	= $(CSC) $(AM_CHICKEN_FLAGS_OBJECT_STATIC) -c -o
 
+# Compile object files into a shared  library.  We use this for import
+# libraries.
+#
+CSC_COMPILE_LIBRARY	= $(CSC) -dynamic $(AM_CHICKEN_LIBFLAGS) -o
+
 # Link object files into a shared library.
 #
 CSC_LINK_LIBRARY	= $(CSC) $(AM_CHICKEN_LIBFLAGS) -o
@@ -135,18 +140,13 @@ CSC_LINK_PROGRAM	= $(CSC) $(AM_CHICKEN_PROGFLAGS) -o
 
 TARGETS		= \
 	library-for-expand.so		\
+	module-for-expand.import.so	\
 	library-alpha.so		\
 	library-beta.so			\
 	program-using-alpha		\
 	program-using-beta
 
-MORE_TARGETS	= \
-	library-for-expand.import.so	\
-	library-alpha.import.so		\
-	library-beta-one.import.so	\
-	library-beta-two.import.so
-
-CLEANFILES	= $(TARGETS) $(MORE_TARGETS) *.so *import.* *.o *.c
+CLEANFILES	= $(TARGETS) *.so *import.* *.o *.c
 
 ## --------------------------------------------------------------------
 
@@ -162,7 +162,7 @@ clean:
 
 #### rules for: library-for-expand
 
-module-for-expand.o module-for-expand.import.scm: module-for-expand.scm
+module-for-expand.o: module-for-expand.scm
 	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
 	@echo
 
@@ -172,54 +172,52 @@ library-for-expand.so: module-for-expand.o
 
 ## --------------------------------------------------------------------
 
-module-for-expand.import.o: module-for-expand.import.scm
-	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
-	@echo
+module-for-expand.import.scm: module-for-expand.o
 
-library-for-expand.import.so: module-for-expand.import.o
-	$(CSC_LINK_LIBRARY) $(@) $(<)
+module-for-expand.import.so: module-for-expand.import.scm
+	$(CSC_COMPILE_LIBRARY) $(@) $(<)
 	@echo
 
 
 #### rules for: library-alpha
 
-module-alpha.o module-alpha.import.scm: module-alpha.scm library-for-expand.so
+module-alpha.o: module-alpha.scm library-for-expand.so module-for-expand.import.so
 	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
 	@echo
 
-library-alpha.so: module-alpha.o library-for-expand.so
+library-alpha.so: module-alpha.o
 	$(CSC_LINK_LIBRARY) $(@) $(<)
 	@echo
 
 ## --------------------------------------------------------------------
 
-module-alpha.import.o: module-alpha.import.scm
-	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
-	@echo
+module-alpha.import.scm: module-alpha.o
 
-library-alpha.import.so: module-alpha.import.o
-	$(CSC_LINK_LIBRARY) $(@) $(<)
+module-alpha.import.so: module-alpha.import.scm
+	$(CSC_COMPILE_LIBRARY) $(@) $(<)
 	@echo
 
 
 #### rules for: program using alpha
 
-program-using-alpha.o: program-using-alpha.scm library-alpha.so
+program-using-alpha-module-main.o: program-using-alpha-module-main.scm library-alpha.so module-alpha.import.so
 	$(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
 	@echo
 
-program-using-alpha: program-using-alpha.o library-alpha.so
+program-using-alpha: program-using-alpha-module-main.o library-alpha.so
 	$(CSC_LINK_PROGRAM) $(@) $(<)
 	@echo
 
 
 #### rules for: library-beta
 
-module-beta-one.o module-beta-one.import.scm: module-beta-one.scm library-alpha.so
+LIBRARY_BETA_OBJECTS_DEPS	= library-alpha.so module-alpha.import.so
+
+module-beta-one.o: module-beta-one.scm $(LIBRARY_BETA_OBJECTS_DEPS)
 	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
 	@echo
 
-module-beta-two.o module-beta-two.import.scm: module-beta-two.scm library-alpha.so
+module-beta-two.o: module-beta-two.scm $(LIBRARY_BETA_OBJECTS_DEPS) module-beta-one.import.so
 	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
 	@echo
 
@@ -229,30 +227,30 @@ library-beta.so: module-beta-one.o module-beta-two.o
 
 ## --------------------------------------------------------------------
 
-module-beta-one.import.o: module-beta-one.import.scm
-	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+module-beta-one.import.scm: module-beta-one.o
+
+module-beta-one.import.so: module-beta-one.import.scm
+	$(CSC_COMPILE_LIBRARY) $(@) $(<)
 	@echo
 
-module-beta-two.import.o: module-beta-two.import.scm
-	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
-	@echo
+## --------------------------------------------------------------------
 
-library-beta-one.import.so: module-beta-one.import.o
-	$(CSC_LINK_LIBRARY) $(@) $(^)
-	@echo
+module-beta-two.import.scm: module-beta-two.o
 
-library-beta-two.import.so: module-beta-two.import.o
-	$(CSC_LINK_LIBRARY) $(@) $(^)
+module-beta-two.import.so: module-beta-two.import.scm
+	$(CSC_COMPILE_LIBRARY) $(@) $(<)
 	@echo
 
 
 #### rules for: program using beta
 
-program-using-beta.o: program-using-beta.scm library-beta.so
+PROGRAM_BETA_OBJECTS_DEPS	= library-beta.so module-beta-one.import.so module-beta-two.import.so
+
+program-using-beta-module-main.o: program-using-beta-module-main.scm $(PROGRAM_BETA_OBJECTS_DEPS)
 	$(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
 	@echo
 
-program-using-beta: program-using-beta.o library-beta.so
+program-using-beta: program-using-beta-module-main.o library-beta.so
 	$(CSC_LINK_PROGRAM) $(@) $(<)
 	@echo
 

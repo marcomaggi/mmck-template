@@ -1,12 +1,13 @@
 ;; module-for-expand.scm --
 ;;
-;; This file is  the whole body of the  library "library-for-expand" and
-;; defines a single module "module-for-expand".
+;; This   file  is   the  single   component  of   the  shared   library
+;; "library-for-expand"; there is neither the  need to declare a "unit",
+;; nor to declare any "uses".
 ;;
-;; This  library is  meant  to be  loaded in  the  expansion phase:  its
-;; exported syntactic bindings are meant to be used in the body of macro
-;; transformers.
-
+;; This file defines a single  module "module-for-expand", which we want
+;; to import from other libraries: we do need to emit the import library
+;; for this module.
+;;
 (declare (emit-import-library module-for-expand))
 
 (module (module-for-expand)
@@ -17,7 +18,7 @@
 	(import-for-syntax (chicken pretty-print))
 
 	(begin-for-syntax
-	 (pretty-print 'evaluating-expand-time-code-of-module-alpha))
+	 (pretty-print 'evaluating-expand-time-code-of-module-for-expand))
 
 	(define (the-func)
 	  'module-for-expand::the-func)

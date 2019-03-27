@@ -1,15 +1,14 @@
 ;; module-alpha.scm --
 ;;
-;; This  file is  the  whole  body of  the  library "library-alpha"  and
-;; defines a single module "module-alpha".
-
-(declare (emit-import-library module-alpha))
-
-;; Make the library "library-for-expand"  available, but do *not* import
-;; it in  any lexical environment.   This library implements  the module
-;; "module-for-expand": we will import it later.
+;; This   file  is   the  single   component  of   the  shared   library
+;; "library-alpha"; there is  neither the need to declare  a "unit", nor
+;; to declare any "uses".
 ;;
-(require-library library-for-expand)
+;; This file  defines a single  module "module-alpha", which we  want to
+;; import from  other libraries: we do  need to emit the  import library
+;; for this module.
+;;
+(declare (emit-import-library module-alpha))
 
 (module (module-alpha)
 	(the-func (syntax: the-macro))
