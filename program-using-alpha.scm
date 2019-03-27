@@ -1,12 +1,15 @@
 ;; program-using-alpha.scm --
 
-(declare (uses module-alpha))
+(require-library library-alpha)
 
 (import (scheme)
 	(prefix module-alpha alpha::)
 	(chicken pretty-print))
 
-(define (main . args)
-  (pretty-print (alpha::the-func)))
+(define (main)
+  (pretty-print (list 'program-using-alpha::main
+		      (alpha::the-func))))
+
+(main)
 
 ;;; end of file

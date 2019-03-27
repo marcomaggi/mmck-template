@@ -1,107 +1,259 @@
 # Makefile --
 
-# The option "-setup-mode":
+
+#### general compiler options
+#
+# Option "-setup-mode":
 #
 #   When locating  extension, search the current  directory first.  By
 #   default, extensions are located first in the extension repository,
 #   where  chicken-install   stores  compiled  extensions   and  their
 #   associated metadata.
 #
-AM_CHICKEN_FLAGS	= -setup-mode -dynamic
-AM_CHICKEN_LDFLAGS	= -setup-mode -library -shared
+# Option "-dynamic":
+#
+#   This option  should be  used when compiling  files intended  to be
+#   loaded dynamically into a running Scheme program.
+#
+# Option "-library":
+#
+#   Compile multiple units into a dynamic library.
+#
+# Option  "-verbose":
+#
+#   Show compiler notes and tool-invocations.
+#
+
+# Included   in   every   compiler   command   line.    The   variable
+# "CHICKEN_FLAGS" is available  for the user to be set  on the command
+# line of "make":
+#
+#   $ make CHICKEN_FLAGS=...
+#
+AM_CHICKEN_FLAGS	= -setup-mode $(CHICKEN_FLAGS)
+
+# Include this conditional with:
+#
+#   $ make VERBOSE=yes ...
+#
+ifdef VERBOSE
+AM_CHICKEN_FLAGS	+= -verbose
+endif
+
+# Include this conditional with:
+#
+#   $ make VERY_VERBOSE=yes ...
+#
+ifdef VERY_VERBOSE
+AM_CHICKEN_FLAGS	+= -vv
+endif
+
+# Include this conditional with:
+#
+#   $ make SUPER_VERBOSE=yes ...
+#
+ifdef SUPER_VERBOSE
+AM_CHICKEN_FLAGS	+= -vvv
+endif
+
+
+#### compiler flags
+
+# Included in every compiler command line used to compile object files
+# for a shared library.
+#
+AM_CHICKEN_FLAGS_OBJECT_SHARED = -dynamic $(AM_CHICKEN_FLAGS)
+
+# Included in every compiler command line used to compile object files
+# for a program.
+#
+AM_CHICKEN_FLAGS_OBJECT_STATIC	= $(AM_CHICKEN_FLAGS)
+
+## --------------------------------------------------------------------
+
+# Option "-C  -g": hand "-g" option  to the C compiler.   Include this
+# conditional with:
+#
+#   $ make DEBUG=yes ...
+#
+ifdef DEBUG
+AM_CHICKEN_FLAGS_OBJECT_SHARED	+= -debug-info -C -g
+AM_CHICKEN_FLAGS_OBJECT_STATIC	+= -debug-info -C -g
+endif
+
+# Option  "-k": keep  intermediate  files.   Include this  conditional
+# with:
+#
+#   $ make KEEP=yes ...
+#
+ifdef KEEP
+AM_CHICKEN_FLAGS_OBJECT_SHARED	+= -k
+AM_CHICKEN_FLAGS_OBJECT_STATIC	+= -k
+endif
+
+## --------------------------------------------------------------------
+
+# Included in every compiler command line used to link object files in
+# a shared library.  The  variable "CHICKEN_LIBFLAGS" is available for
+# the user to be set on the command line of "make":
+#
+#   $ make CHICKEN_LIBFLAGS=...
+#
+AM_CHICKEN_LIBFLAGS	= -library $(AM_CHICKEN_FLAGS) $(CHICKEN_LIBFLAGS)
+
+# Included in every compiler command line used to link object files in
+# a program.   The variable  "CHICKEN_PROGFLAGS" is available  for the
+# user to be set on the command line of "make":
+#
+#   $ make CHICKEN_PROGFLAGS=...
+#
+AM_CHICKEN_PROGFLAGS	= $(AM_CHICKEN_FLAGS) $(CHICKEN_PROGFLAGS)
+
+
+#### compiler command lines
 
 CSC			= csc
-CSC_COMPILE_OBJECT	= $(CSC) $(AM_CHICKEN_FLAGS) $(CHICKEN_FLAGS) -c -o
-CSC_LINK_LIBRARY	= $(CSC) $(AM_CHICKEN_LDFLAGS) $(CHICKEN_LDFLAGS) -o
-CSC_LINK_PROGRAM	= $(CSC) $(AM_CHICKEN_LDFLAGS) $(CHICKEN_LDFLAGS) -o
+
+# Compile an object file to be used in a shared library.
+#
+CSC_COMPILE_OBJECT_SHARED	= $(CSC) $(AM_CHICKEN_FLAGS_OBJECT_SHARED) -c -o
+
+# Compile an object file to be used in a program.
+#
+CSC_COMPILE_OBJECT_STATIC	= $(CSC) $(AM_CHICKEN_FLAGS_OBJECT_STATIC) -c -o
+
+# Link object files into a shared library.
+#
+CSC_LINK_LIBRARY	= $(CSC) $(AM_CHICKEN_LIBFLAGS) -o
+
+# Link object files into a program.
+#
+CSC_LINK_PROGRAM	= $(CSC) $(AM_CHICKEN_PROGFLAGS) -o
+
+
+#### build targets
 
 TARGETS		= \
 	library-for-expand.so		\
-	library-for-expand.import.so	\
 	library-alpha.so		\
-	library-alpha.import.so		\
 	library-beta.so			\
-	library-beta-one.import.so	\
-	library-beta-two.import.so	\
 	program-using-alpha		\
 	program-using-beta
 
-CLEANFILES	= $(TARGETS) *.so *import.* *.o
+MORE_TARGETS	= \
+	library-for-expand.import.so	\
+	library-alpha.import.so		\
+	library-beta-one.import.so	\
+	library-beta-two.import.so
+
+CLEANFILES	= $(TARGETS) $(MORE_TARGETS) *.so *import.* *.o *.c
 
 ## --------------------------------------------------------------------
 
-.PHONY: all clean
+.PHONY: all clean more
 
 all: $(TARGETS)
 
-clean:
-	rm -f $(CLEANFILES)
+more: $(MORE_TARGETS)
 
-## --------------------------------------------------------------------
+clean:
+	@rm -f $(CLEANFILES)
+
+
+#### rules for: library-for-expand
 
 module-for-expand.o module-for-expand.import.scm: module-for-expand.scm
-	$(CSC_COMPILE_OBJECT) $(@) $(<)
-
-module-for-expand.import.o: module-for-expand.import.scm
-	$(CSC_COMPILE_OBJECT) $(@) $(<)
+	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+	@echo
 
 library-for-expand.so: module-for-expand.o
 	$(CSC_LINK_LIBRARY) $(@) $(<)
+	@echo
+
+## --------------------------------------------------------------------
+
+module-for-expand.import.o: module-for-expand.import.scm
+	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+	@echo
 
 library-for-expand.import.so: module-for-expand.import.o
 	$(CSC_LINK_LIBRARY) $(@) $(<)
+	@echo
 
-## --------------------------------------------------------------------
+
+#### rules for: library-alpha
 
 module-alpha.o module-alpha.import.scm: module-alpha.scm library-for-expand.so
-	$(CSC_COMPILE_OBJECT) $(@) $(<) -link library-for-expand
+	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+	@echo
+
+library-alpha.so: module-alpha.o library-for-expand.so
+	$(CSC_LINK_LIBRARY) $(@) $(<)
+	@echo
+
+## --------------------------------------------------------------------
 
 module-alpha.import.o: module-alpha.import.scm
-	$(CSC_COMPILE_OBJECT) $(@) $(<)
-
-library-alpha.so: module-alpha.o library-for-expand.import.so
-	$(CSC_LINK_LIBRARY) $(@) $(<) -link library-for-expand
+	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+	@echo
 
 library-alpha.import.so: module-alpha.import.o
-	$(CSC_LINK_LIBRARY) $(@) $(<) -link library-for-expand
+	$(CSC_LINK_LIBRARY) $(@) $(<)
+	@echo
 
-## --------------------------------------------------------------------
-
-module-beta-one.o module-beta-one.import.scm: module-beta-one.scm library-alpha.so
-	$(CSC_COMPILE_OBJECT) $(@) $(<) -link library-alpha
-
-module-beta-two.o module-beta-two.import.scm: module-beta-two.scm library-alpha.so
-	$(CSC_COMPILE_OBJECT) $(@) $(<) -link library-alpha
-
-module-beta-one.import.o: module-beta-one.import.scm
-	$(CSC_COMPILE_OBJECT) $(@) $(<)
-
-module-beta-two.import.o: module-beta-two.import.scm
-	$(CSC_COMPILE_OBJECT) $(@) $(<)
-
-library-beta.so: module-beta-one.o module-beta-two.o
-	$(CSC_LINK_LIBRARY) $(@) $(^) -link library-alpha
-
-library-beta-one.import.so: module-beta-one.import.o
-	$(CSC_LINK_LIBRARY) $(@) $(^) -link library-alpha
-
-library-beta-two.import.so: module-beta-two.import.o
-	$(CSC_LINK_LIBRARY) $(@) $(^) -link library-alpha
-
-## --------------------------------------------------------------------
+
+#### rules for: program using alpha
 
 program-using-alpha.o: program-using-alpha.scm library-alpha.so
-	$(CSC_COMPILE_OBJECT) $(@) $(<) -link library-alpha
+	$(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
+	@echo
 
 program-using-alpha: program-using-alpha.o library-alpha.so
-	$(CSC_LINK_PROGRAM) $(@) $(<) -link library-alpha
+	$(CSC_LINK_PROGRAM) $(@) $(<)
+	@echo
+
+
+#### rules for: library-beta
+
+module-beta-one.o module-beta-one.import.scm: module-beta-one.scm library-alpha.so
+	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+	@echo
+
+module-beta-two.o module-beta-two.import.scm: module-beta-two.scm library-alpha.so
+	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+	@echo
+
+library-beta.so: module-beta-one.o module-beta-two.o
+	$(CSC_LINK_LIBRARY) $(@) $(^)
+	@echo
 
 ## --------------------------------------------------------------------
 
+module-beta-one.import.o: module-beta-one.import.scm
+	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+	@echo
+
+module-beta-two.import.o: module-beta-two.import.scm
+	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+	@echo
+
+library-beta-one.import.so: module-beta-one.import.o
+	$(CSC_LINK_LIBRARY) $(@) $(^)
+	@echo
+
+library-beta-two.import.so: module-beta-two.import.o
+	$(CSC_LINK_LIBRARY) $(@) $(^)
+	@echo
+
+
+#### rules for: program using beta
+
 program-using-beta.o: program-using-beta.scm library-beta.so
-	$(CSC_COMPILE_OBJECT) $(@) $(<) -link library-beta,library-alpha
+	$(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
+	@echo
 
 program-using-beta: program-using-beta.o library-beta.so
-	$(CSC_LINK_PROGRAM) $(@) $(<) -link library-beta,library-alpha
+	$(CSC_LINK_PROGRAM) $(@) $(<)
+	@echo
 
 ### end of file
