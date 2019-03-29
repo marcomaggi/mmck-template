@@ -164,6 +164,26 @@ implementing a template library.
 
 This package supports @posix{} platforms.
 
+The package installs the library @code{mmux-chicken-template} along with its import library.  To
+require the library and import its syntactic bindings in a module we can do:
+
+@example
+(declare (unit my-module)
+         (emit-import-library my-module))
+
+(require-library mmux-chicken-template)
+
+(module (my-module)
+    ()
+  (import (scheme)
+    (mmux-chicken-template)
+    (chicken pretty-print))
+
+  ...
+
+  #| end of module |# )
+@end example
+
 @c page
 @node version
 @chapter Version functions
@@ -174,22 +194,22 @@ explanation of interface numbers as managed by @gnu{} Libtool @xref{Libtool vers
 Libtool's versioning system, libtool, Shared library support for @gnu{}}.
 
 
-@defun template-version-string
+@defun mmux-chicken-template-version-string
 Return a string representing the interface version number.
 @end defun
 
 
-@defun template-version-interface-current
+@defun mmux-chicken-template-version-interface-current
 Return an integer representing the library interface current number.
 @end defun
 
 
-@defun template-version-interface-revision
+@defun mmux-chicken-template-version-interface-revision
 Return an integer representing the library interface current revision number.
 @end defun
 
 
-@defun template-version-interface-age
+@defun mmux-chicken-template-version-interface-age
 Return an integer representing the library interface current age.
 @end defun
 
