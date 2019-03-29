@@ -277,30 +277,33 @@ MMUX_CHECK_ENV			+= \
 
 ## --------------------------------------------------------------------
 
+EXTRA_DIST		+= \
+	tests/test-version.scm
+
 MMUX_CHECK_PROGS	= \
 	tests/test-version
 
 MMUX_CHECK_OBJECTS	= \
 	tests/test-version.$(OBJEXT)
 
-CLEANFILES		+= $(MMUX_CHECK_OBJECTS)
-
-check_PROGRAMS		= $(MMUX_CHECK_PROGS)
-if MMUX_TESTING_ENABLED
-TESTS			= $(check_PROGRAMS)
-endif
+CLEANFILES		+= $(MMUX_CHECK_PROGS) $(MMUX_CHECK_OBJECTS)
+TESTS			= $(MMUX_CHECK_PROGS)
 AM_TESTS_ENVIRONMENT	= $(MMUX_CHECK_ENV)
 
 MMUX_TEMPLATE_CHECK_DEPS= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_TEMPLATE_IMPORT_LIBS) tests/$(am__dirstamp)
 
 ## --------------------------------------------------------------------
 
-tests_test_version_SOURCES	= tests/test-version.scm
+tests/$(am__dirstamp):
+	@$(MKDIR_P) tests
+	@: > tests/$(am__dirstamp)
+
+## --------------------------------------------------------------------
 
 tests/test-version.$(OBJEXT): tests/test-version.scm $(MMUX_TEMPLATE_CHECK_DEPS)
 	$(MMUX_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
 
-tests/test-version$(EXEEXT): tests/test-version.$(OBJEXT)
+tests/test-version: tests/test-version.$(OBJEXT)
 	$(MMUX_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
 
 
