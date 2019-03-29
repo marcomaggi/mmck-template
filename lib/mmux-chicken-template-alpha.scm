@@ -30,13 +30,13 @@
 	 (emit-import-library mmux-chicken-template-alpha))
 
 (module (mmux-chicken-template-alpha)
-    (mmux-chicken-template-alpha)
+    (the-func)
   (import (scheme))
 
 
 ;;;; miscellaneous functions
 
-(define (mmux-chicken-template-alpha)
+(define (the-func)
   #t)
 
 
