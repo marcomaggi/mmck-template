@@ -350,9 +350,4 @@ repl:
 test tests:
 	for f in $(builddir)/tests/test-*$(file); do $(MMUX_CHECK_ENV) $$f; done
 
-
-#### common rules
-
-include $(top_srcdir)/meta/automake/mmux-makefile-rules
-
 ### end of file
