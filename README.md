@@ -1,19 +1,14 @@
 # cctemplate
 
-[![Build Status](https://travis-ci.org/marcomaggi/cctemplate.svg?branch=master)](https://travis-ci.org/marcomaggi/cctemplate)
-[![codecov](https://codecov.io/gh/marcomaggi/cctemplate/branch/master/graph/badge.svg)](https://codecov.io/gh/marcomaggi/cctemplate)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b07b27b019014a2198d498e2e623ad5a)](https://www.codacy.com/app/marcomaggi/cctemplate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=marcomaggi/cctemplate&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/marcomaggi/mmux-chicken-template.svg?branch=master)](https://travis-ci.org/marcomaggi/mmux-chicken-template)
+
 
 ## Introduction
 
 This is  a template project, to  be used as starting  point for packages
-that install a C language library.
+that build and install CHICKEN language libraries.
 
-The  library  targets  POSIX  systems.   This  package  depends  on  the
-packages:  CCExceptions,  at least  version  0.8.0;  CCMemory, at  least
-version  0.2.1; CCStructs,  at least  version  0.2.0.  To  run the  test
-suite: this package  depends upon the package CCTests,  at least version
-0.3.0.
+The library targets POSIX systems.
 
 The package uses the GNU Autotools and it is tested, using Travis CI, on
 both Ubuntu GNU+Linux  systems and OS X systems.  The  package relies on
@@ -21,7 +16,7 @@ both Ubuntu GNU+Linux  systems and OS X systems.  The  package relies on
 
 ## License
 
-Copyright (c) 2012, 2015-2019 Marco Maggi<br/>
+Copyright (c) 2019 Marco Maggi<br/>
 `marco.maggi-ipsu@poste.it`<br/>
 All rights reserved.
 
@@ -43,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 To install from a proper release tarball, do this:
 
 ```
-$ cd cctemplate-0.1.0
+$ cd mmux-chicken-template-0.1.0
 $ mkdir build
 $ cd build
 $ ../configure
@@ -71,13 +66,13 @@ The Makefile supports the DESTDIR  environment variable to install files
 in a temporary location, example: to see what will happen:
 
 ```
-$ make -n install DESTDIR=/tmp/cctemplate
+$ make -n install DESTDIR=/tmp/mmux-chicken-template
 ```
 
 to really do it:
 
 ```
-$ make install DESTDIR=/tmp/cctemplate
+$ make install DESTDIR=/tmp/mmux-chicken-template
 ```
 
 After the  installation it is  possible to verify the  installed library
@@ -93,18 +88,9 @@ Libtool), then  we must first run  the script `autogen.sh` from  the top
 source directory, to generate the needed files:
 
 ```
-$ cd cctemplate
+$ cd mmux-chicken-template
 $ sh autogen.sh
 
-```
-
-notice  that  `autogen.sh`  will   run  the  programs  `autoreconf`  and
-`libtoolize`; the  latter is  selected through the  environment variable
-`LIBTOOLIZE`,  whose  value  can  be  customised;  for  example  to  run
-`glibtoolize` rather than `libtoolize` we do:
-
-```
-$ LIBTOOLIZE=glibtoolize sh autogen.sh
 ```
 
 After this  the procedure  is the same  as the one  for building  from a
@@ -131,7 +117,9 @@ $ make install-html
 ## Credits
 
 The  stuff was  written by  Marco Maggi.   If this  package exists  it's
-because of the great GNU software tools that he uses all the time.
+because  of the  great GNU  software tools  that he  uses all  the time.
+CHICKEN was  originally a creation  of Felix  L.  Winkelmann, it  is now
+developed and maintained The CHICKEN Team.
 
 ## Bugs, vulnerabilities and contributions
 
@@ -144,39 +132,27 @@ Pull Requests feature at the project's GitHub site.
 
 The latest release of this package can be downloaded from:
 
-[https://bitbucket.org/marcomaggi/cctemplate/downloads](https://bitbucket.org/marcomaggi/cctemplate/downloads)
+[https://bitbucket.org/marcomaggi/mmux-chicken-template/downloads](https://bitbucket.org/marcomaggi/mmux-chicken-template/downloads)
 
 development takes place at:
 
-[http://github.com/marcomaggi/cctemplate/](http://github.com/marcomaggi/cctemplate/)
+[http://github.com/marcomaggi/mmux-chicken-template/](http://github.com/marcomaggi/mmux-chicken-template/)
 
 and as backup at:
 
-[https://bitbucket.org/marcomaggi/cctemplate/](https://bitbucket.org/marcomaggi/cctemplate/)
+[https://bitbucket.org/marcomaggi/mmux-chicken-template/](https://bitbucket.org/marcomaggi/mmux-chicken-template/)
 
 the documentation is available online:
 
-[http://marcomaggi.github.io/docs/cctemplate.html](http://marcomaggi.github.io/docs/cctemplate.html)
+[http://marcomaggi.github.io/docs/mmux-chicken-template.html](http://marcomaggi.github.io/docs/mmux-chicken-template.html)
 
 the GNU Project software can be found here:
 
 [http://www.gnu.org/](http://www.gnu.org/)
 
-the package CCExceptions is available at:
+we can download CHICKEN from:
 
-[https://github.com/marcomaggi/ccexceptions/](https://github.com/marcomaggi/ccexceptions/)
-
-the package CCMemory is available at:
-
-[https://github.com/marcomaggi/ccmemory/](https://github.com/marcomaggi/ccmemory/)
-
-the package CCStructs is available at:
-
-[https://github.com/marcomaggi/ccstructs/](https://github.com/marcomaggi/ccstructs/)
-
-the package CCTests is available at:
-
-[https://github.com/marcomaggi/cctests/](https://github.com/marcomaggi/cctests/)
+[http://www.call-cc.org/](http://www.call-cc.org/)
 
 ## Badges and static analysis
 
@@ -186,39 +162,8 @@ Travis CI is  a hosted, distributed continuous  integration service used
 to build and test software projects  hosted at GitHub.  We can find this
 project's dashboard at:
 
-[https://travis-ci.org/marcomaggi/cctemplate](https://travis-ci.org/marcomaggi/cctemplate)
+[https://travis-ci.org/marcomaggi/mmux-chicken-template](https://travis-ci.org/marcomaggi/mmux-chicken-template)
 
 Usage of this  service is configured through the  file `.travis.yml` and
 additional scripts are under the directory `meta/travis-ci`.
 
-### Clang's Static Analyzer
-
-The Clang Static Analyzer is a source code analysis tool that finds bugs
-in C, C++, and Objective-C programs.  It is distributed along with Clang
-and we can find it at:
-
-[http://clang-analyzer.llvm.org/](http://clang-analyzer.llvm.org/)
-
-Usage of this  service is implemented with make rules;  see the relevant
-section in the file `Makefile.am`.
-
-### Codecov
-
-Codecov is a service providing code  coverage reports.  We can find this
-project's dashboard at:
-
-[https://codecov.io/gh/marcomaggi/cctemplate](https://codecov.io/gh/marcomaggi/cctemplate)
-
-Usage of  this service is  implemented through direct  interface between
-GitHub and Codecov  sites; it configured through  the file `codecov.yml`
-and appropriate entries in Travis CI's matrix of builds.
-
-### Codacy
-
-Codacy is  an online service  providing code  review.  We can  find this
-project's dashboard at:
-
-[https://www.codacy.com/app/marcomaggi/cctemplate](https://www.codacy.com/app/marcomaggi/cctemplate)
-
-Usage of this service is  implemented through direct integration between
-GitHub and Codacy sites.
