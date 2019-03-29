@@ -107,7 +107,11 @@ CSC_LINK_LIBRARY		= $(CHICKEN_COMPILER) $(AM_CHICKEN_LIBFLAGS) -o
 CSC_LINK_PROGRAM		= $(CHICKEN_COMPILER) $(AM_CHICKEN_PROGFLAGS) -o
 
 
-#### build targets
+#### rules and variable definitions for all build targets
+#
+# We  expect the  library's source  files  to be  under the  directory
+# "$(top_srcdir)/lib".
+#
 
 # We need  to define a  repository path to  let the compiler  find the
 # modules' import  libraries while  compiling modules  importing other
@@ -120,11 +124,18 @@ MMUX_LIB_REPOSITORY_PATH	= $(abs_builddir)/lib:$(CHICKEN_REPOSITORY_PATH)
 #
 MMUX_LIB_ENV			= CHICKEN_REPOSITORY_PATH=$(MMUX_LIB_REPOSITORY_PATH); export CHICKEN_REPOSITORY_PATH;
 
-## --------------------------------------------------------------------
-
 # Common dependencies to build every object file.
 #
 MMUX_OBJECTS_DEPS		= lib/$(am__dirstamp)
+
+CLEANFILES			+= lib/$(am__dirstamp) tests/$(am__dirstamp)
+
+lib/$(am__dirstamp):
+	@$(MKDIR_P) lib
+	@: > lib/$(am__dirstamp)
+
+
+#### library build targets
 
 # All the source files of the extension library.
 #
@@ -165,50 +176,50 @@ MMUX_TEMPLATE_IMPORT_LIBRARY	= lib/mmux-chicken-template.import.$(MMUX_SOEXT)
 
 ## --------------------------------------------------------------------
 
-EXTRA_DIST		= $(MMUX_TEMPLATE_MODULES)
+EXTRA_DIST	+= $(MMUX_TEMPLATE_MODULES)
 
-CLEANFILES		+= \
+CLEANFILES	+= \
 	$(MMUX_TEMPLATE_LIBRARY)	\
 	$(MMUX_TEMPLATE_IMPORT_LIBRARY)	\
 	$(MMUX_TEMPLATE_OBJECTS)	\
 	$(MMUX_TEMPLATE_IMPORT_SOURCES)	\
 	$(MMUX_TEMPLATE_IMPORT_LIBS)
 
-## --------------------------------------------------------------------
-
-all: $(MMUX_TEMPLATE_LIBRARY) $(MMUX_TEMPLATE_IMPORT_LIBRARY)
-
-## --------------------------------------------------------------------
-
-lib/$(am__dirstamp):
-	@$(MKDIR_P) lib
-	@: > lib/$(am__dirstamp)
+# These variables are parsed by GNU Automake to build the main library
+# targets and install them under the directory $(MMUX_CHICKEN_LIBDIR).
+#
+# We are shamelessly cheating by  installing them using GNU Automake's
+# primary  suffix  "_SCRIPTS"; these  are  not  scripts!  Scripts  are
+# installed with the permissions 0755, which, for some reason, is what
+# we want  for shared libraries.
+#
+# We  could use  the  primary suffix  "_DATA", but  we  would get  the
+# permissions 0644.
+#
+templatedir		= $(MMUX_CHICKEN_LIBDIR)
+template_SCRIPTS	= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_TEMPLATE_IMPORT_LIBRARY)
 
 ## --------------------------------------------------------------------
 
 lib/mmux-chicken-template-version.$(OBJEXT): lib/mmux-chicken-template-version.scm $(MMUX_OBJECTS_DEPS)
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<) -prologue lib/config.scm
 	@$(MV) mmux-chicken-template-version.import.scm lib/mmux-chicken-template-version.import.scm
-	@echo
 
 lib/mmux-chicken-template-version.import.scm: lib/mmux-chicken-template-version.$(OBJEXT)
 
 lib/mmux-chicken-template-version.import.$(MMUX_SOEXT): lib/mmux-chicken-template-version.import.scm
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
-	@echo
 
 ## --------------------------------------------------------------------
 
 lib/mmux-chicken-template-alpha.$(OBJEXT): lib/mmux-chicken-template-alpha.scm $(MMUX_OBJECTS_DEPS)
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
 	@$(MV) mmux-chicken-template-alpha.import.scm lib/mmux-chicken-template-alpha.import.scm
-	@echo
 
 lib/mmux-chicken-template-alpha.import.scm: lib/mmux-chicken-template-alpha.$(OBJEXT)
 
 lib/mmux-chicken-template-alpha.import.$(MMUX_SOEXT): lib/mmux-chicken-template-alpha.import.scm
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
-	@echo
 
 ## --------------------------------------------------------------------
 
@@ -218,19 +229,16 @@ lib/mmux-chicken-template-alpha.import.$(MMUX_SOEXT): lib/mmux-chicken-template-
 lib/mmux-chicken-template.$(OBJEXT): lib/mmux-chicken-template.scm $(MMUX_TEMPLATE_IMPORT_LIBS) $(MMUX_OBJECTS_DEPS)
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
 	@$(MV) mmux-chicken-template.import.scm lib/mmux-chicken-template.import.scm
-	@echo
 
 lib/mmux-chicken-template.import.scm: lib/mmux-chicken-template.$(OBJEXT)
 
 $(MMUX_TEMPLATE_IMPORT_LIBRARY): lib/mmux-chicken-template.import.scm
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
-	@echo
 
 ## --------------------------------------------------------------------
 
 $(MMUX_TEMPLATE_LIBRARY): $(MMUX_TEMPLATE_OBJECTS)
 	$(MMUX_LIB_ENV) $(CSC_LINK_LIBRARY) $(@) $(^)
-	@echo
 
 
 #### interface to "make check"
@@ -240,12 +248,17 @@ $(MMUX_TEMPLATE_LIBRARY): $(MMUX_TEMPLATE_OBJECTS)
 #
 
 MMUX_CHECK_REPOSITORY_PATH	= $(abs_builddir)/lib:$(CHICKEN_REPOSITORY_PATH)
-MMUX_CHECK_LD_PATH		= $(builddir)/lib:$(LD_LIBRARY_PATH)
-MMUX_CHECK_DYLD_PATH		= $(builddir)/lib:$(DYLD_LIBRARY_PATH)
+MMUX_CHECK_LD_PATH		= $(builddir)/.libs:$(LD_LIBRARY_PATH)
+MMUX_CHECK_DYLD_PATH		= $(builddir)/.libs:$(DYLD_LIBRARY_PATH)
 MMUX_CHECK_SOURCE_PATH		= $(srcdir)/tests:$(srcdir)/lib
 
 # Let's make  sure the  compiler and  the test  programs can  find the
 # libraries built by this package.
+#
+# In this shell environment we also set LD_LIBRARY_PATH (for Unix) and
+# DYLD_LIBRARY_PATH (for Darwin) to allow  the programs to find shared
+# libraries  that are  built using  GNU Libtool.   These settings  are
+# there even if this package does not build such libraries.  Sue me...
 #
 MMUX_CHECK_ENV			= \
 	LD_LIBRARY_PATH=$(MMUX_CHECK_LD_PATH);			export LD_LIBRARY_PATH;		\
@@ -286,21 +299,24 @@ tests_test_version_SOURCES	= tests/test-version.scm
 
 tests/test-version.$(OBJEXT): tests/test-version.scm $(MMUX_TEMPLATE_CHECK_DEPS)
 	$(MMUX_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
-	@echo
 
 tests/test-version$(EXEEXT): tests/test-version.$(OBJEXT)
 	$(MMUX_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
-	@echo
 
 
 #### interface to "make instcheck"
 
-MMUX_INSTALLCHECK_REPOSITORY_PATH	= $(CHICKEN_REPOSITORY_PATH)
-MMUX_INSTALLCHECK_LD_PATH		= $(DESTDIR)$(MMUX_CHICKEN_LIBDIR):$(LD_LIBRARY_PATH)
-MMUX_INSTALLCHECK_DYLD_PATH		= $(DESTDIR)$(MMUX_CHICKEN_LIBDIR):$(DYLD_LIBRARY_PATH)
+MMUX_INSTALLCHECK_REPOSITORY_PATH	= $(DESTDIR)$(MMUX_CHICKEN_LIBDIR):$(CHICKEN_REPOSITORY_PATH)
+MMUX_INSTALLCHECK_LD_PATH		= $(DESTDIR)$(libdir):$(LD_LIBRARY_PATH)
+MMUX_INSTALLCHECK_DYLD_PATH		= $(DESTDIR)$(libdir):$(DYLD_LIBRARY_PATH)
 
 # Let's make  sure the  compiler and  the test  programs can  find the
 # libraries built by this package.
+#
+# In this shell environment we also set LD_LIBRARY_PATH (for Unix) and
+# DYLD_LIBRARY_PATH (for Darwin) to allow  the programs to find shared
+# libraries  that are  built using  GNU Libtool.   These settings  are
+# there even if this package does not build such libraries.  Sue me...
 #
 MMUX_INSTALLCHECK_ENV			= \
 	LD_LIBRARY_PATH=$(MMUX_INSTALLCHECK_LD_PATH);			export LD_LIBRARY_PATH;		\
@@ -318,7 +334,7 @@ MMUX_INSTALLCHECK_ENV			+= \
 	MMUX_BUILDDIR=$(builddir);			export MMUX_BUILDDIR;
 
 installcheck-local: $(TESTS)
-	@for f in $(TESTS); do $(builddir)/$$f; done
+	@for f in $(TESTS); do $(MMUX_INSTALLCHECK_ENV) $(builddir)/$$f; done
 
 
 #### running the interpreter and the tests
