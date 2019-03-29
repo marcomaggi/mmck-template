@@ -240,6 +240,14 @@ installcheck-local: $(TESTS)
 	@for f in $(TESTS); do $(builddir)/$$f; done
 
 
+#### running the interpreter
+
+.PHONY: repl
+
+repl:
+	$(MMUX_CHECK_ENV) $(CHICKEN_INTERPRETER)
+
+
 #### common rules
 
 include $(top_srcdir)/meta/automake/mmux-makefile-rules

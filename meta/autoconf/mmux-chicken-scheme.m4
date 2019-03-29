@@ -4,6 +4,7 @@ dnl Finds Chicken Scheme with compiler executable installed as "csc".
 
 AC_DEFUN([MMUX_CHICKEN_SCHEME],
   [AC_PATH_PROG([CHICKEN_COMPILER],[csc],[:])
+   AC_PATH_PROG([CHICKEN_INTERPRETER],[csi],[:])
 
    MMUX_CHICKEN_LIBDIR=${libdir}/chicken/9
    AC_SUBST([MMUX_CHICKEN_LIBDIR])
