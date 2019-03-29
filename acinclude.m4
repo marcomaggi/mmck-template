@@ -1,0 +1,12 @@
+# acinclude.m4 --
+#
+
+m4_include(meta/autoconf/mmux-core.m4)
+m4_include(meta/autoconf/mmux-check-pkg-config-macros.m4)
+m4_include(meta/autoconf/mmux-check-target-os.m4)
+
+m4_include(meta/autoconf/ax-is-release.m4)
+
+m4_include(meta/autoconf/mmux-chicken-scheme.m4)
+
+### end of file
