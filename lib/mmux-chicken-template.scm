@@ -1,12 +1,18 @@
 ;;; -*- coding: utf-8-unix  -*-
 ;;;
 ;;;Part of: MMUX CHICKEN Template
-;;;Contents: version functions
-;;;Date: Fri Mar 29, 2019
+;;;Contents: main compilation unit
+;;;Date: Mar 29, 2019
 ;;;
 ;;;Abstract
 ;;;
-;;;	This unit defines version functions.
+;;;	This is the  main compilation unit; this  is the one compilation  unit in the
+;;;	shared library that does not DECLARE itself with UNIT.  This compilation unit
+;;;	USES all the other compilation units.
+;;;
+;;;	This compilation  units defines the main  module: it imports all  the modules
+;;;	exporting  public syntactic  bindings  and it  reexports  all such  syntactic
+;;;	bindings.
 ;;;
 ;;;Copyright (C) 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 ;;;
@@ -26,32 +32,15 @@
 
 ;;;; units and module header
 
-(declare (unit mmux-chicken-template-version)
-	 (emit-import-library mmux-chicken-template-version))
+(declare (uses mmux-chicken-template-alpha)
+	 (uses mmux-chicken-template-version)
+	 (emit-import-library mmux-chicken-template))
 
-(module (mmux-chicken-template-version)
-    *
-  (import (scheme)
-    (prefix mmux-chicken-template-config config::))
-
-
-;;;; version functions
-
-(define (mmux-chicken-template-version-string)
-  config::mmux_chicken_template_VERSION_INTERFACE_STRING)
-
-(define (mmux-chicken-template-version-interface-current)
-  config::mmux_chicken_template_VERSION_INTERFACE_CURRENT)
-
-(define (mmux-chicken-template-version-interface-revision)
-  config::mmux_chicken_template_VERSION_INTERFACE_REVISION)
-
-(define (mmux-chicken-template-version-interface-age)
-  config::mmux_chicken_template_VERSION_INTERFACE_AGE)
-
-
-;;;; done
-
-#| end of module |# )
+(module (mmux-chicken-template)
+    ()
+  (import (only (chicken module) reexport))
+  (reexport (mmux-chicken-template-alpha))
+  (reexport (mmux-chicken-template-version))
+  #| end of module |# )
 
 ;;; end of file

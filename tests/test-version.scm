@@ -31,7 +31,7 @@
 (module (test-version)
     ()
   (import (scheme)
-    (mmux-chicken-template-version)
+    (mmux-chicken-template)
     (chicken pretty-print))
 
 
