@@ -31,17 +31,16 @@
 (module (test-version)
     ()
   (import (scheme)
-    (prefix mmux-chicken-template-alpha alpha::)
-    (prefix mmux-chicken-template-version version::)
+    (mmux-chicken-template-version)
     (chicken pretty-print))
 
 
 ;;;; stuff
 
-(pretty-print 'version-string			(version::mmux-chicken-template-version-string))
-(pretty-print 'version-interface-current	(version::mmux-chicken-template-version-interface-current))
-(pretty-print 'version-interface-revision	(version::mmux-chicken-template-version-interface-revision))
-(pretty-print 'version-interface-age		(version::mmux-chicken-template-version-interface-age))
+(pretty-print (list 'version-string		(mmux-chicken-template-version-string)))
+(pretty-print (list 'version-interface-current	(mmux-chicken-template-version-interface-current)))
+(pretty-print (list 'version-interface-revision	(mmux-chicken-template-version-interface-revision)))
+(pretty-print (list 'version-interface-age	(mmux-chicken-template-version-interface-age)))
 
 
 ;;;; done

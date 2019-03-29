@@ -58,7 +58,7 @@ AM_CHICKEN_FLAGS		= $(CHICKEN_FLAGS)
 # Included in every compiler command line used to compile object files
 # for a shared library.
 #
-AM_CHICKEN_FLAGS_OBJECT_SHARED	= -dynamic -prologue lib/config.scm $(AM_CHICKEN_FLAGS)
+AM_CHICKEN_FLAGS_OBJECT_SHARED	= -dynamic $(AM_CHICKEN_FLAGS)
 
 # Included in every compiler command line used to compile object files
 # for a program.
@@ -109,6 +109,13 @@ CSC_LINK_PROGRAM		= $(CHICKEN_COMPILER) $(AM_CHICKEN_PROGFLAGS) -o
 
 #### build targets
 
+MMUX_LIB_REPOSITORY_PATH	= $(abs_builddir)/lib:$(CHICKEN_REPOSITORY_PATH)
+
+MMUX_LIB_ENV			= \
+	CHICKEN_REPOSITORY_PATH=$(MMUX_LIB_REPOSITORY_PATH); export CHICKEN_REPOSITORY_PATH;
+
+## --------------------------------------------------------------------
+
 MMUX_TEMPLATE_OBJECTS_DEPS	= lib/$(am__dirstamp)
 
 MMUX_TEMPLATE_MODULES		= \
@@ -120,12 +127,12 @@ MMUX_TEMPLATE_OBJECTS		= \
 	lib/mmux-chicken-template-version.$(OBJEXT)
 
 MMUX_TEMPLATE_IMPORT_SOURCES	= \
-	lib/mmux-chicken-template-version.import.scm	\
-	lib/mmux-chicken-template-alpha.import.scm
+	lib/mmux-chicken-template-alpha.import.scm	\
+	lib/mmux-chicken-template-version.import.scm
 
 MMUX_TEMPLATE_IMPORT_LIBS	= \
-	lib/mmux-chicken-template-version.import.$(MMUX_SOEXT)	\
-	lib/mmux-chicken-template-alpha.import.$(MMUX_SOEXT)
+	lib/mmux-chicken-template-alpha.import.$(MMUX_SOEXT)	\
+	lib/mmux-chicken-template-version.import.$(MMUX_SOEXT)
 
 MMUX_TEMPLATE_LIBRARY	= lib/mmux-chicken-template.$(MMUX_SOEXT)
 
@@ -148,29 +155,34 @@ lib/$(am__dirstamp):
 ## --------------------------------------------------------------------
 
 lib/mmux-chicken-template-version.$(OBJEXT): lib/mmux-chicken-template-version.scm $(MMUX_TEMPLATE_OBJECTS_DEPS)
-	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
-	$(MV) mmux-chicken-template-version.import.scm lib/mmux-chicken-template-version.import.scm
+	$(MMUX_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<) -prologue lib/config.scm
+	@$(MV) mmux-chicken-template-version.import.scm lib/mmux-chicken-template-version.import.scm
+	@echo
 
 lib/mmux-chicken-template-version.import.scm: lib/mmux-chicken-template-version.$(OBJEXT)
 
 lib/mmux-chicken-template-version.import.$(MMUX_SOEXT): lib/mmux-chicken-template-version.import.scm
-	$(CSC_COMPILE_LIBRARY) $(@) $(<)
+	$(MMUX_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
+	@echo
 
 ## --------------------------------------------------------------------
 
 lib/mmux-chicken-template-alpha.$(OBJEXT): lib/mmux-chicken-template-alpha.scm $(MMUX_TEMPLATE_OBJECTS_DEPS)
-	$(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
-	$(MV) mmux-chicken-template-alpha.import.scm lib/mmux-chicken-template-alpha.import.scm
+	$(MMUX_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+	@$(MV) mmux-chicken-template-alpha.import.scm lib/mmux-chicken-template-alpha.import.scm
+	@echo
 
 lib/mmux-chicken-template-alpha.import.scm: lib/mmux-chicken-template-alpha.$(OBJEXT)
 
 lib/mmux-chicken-template-alpha.import.$(MMUX_SOEXT): lib/mmux-chicken-template-alpha.import.scm
-	$(CSC_COMPILE_LIBRARY) $(@) $(<)
+	$(MMUX_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
+	@echo
 
 ## --------------------------------------------------------------------
 
 lib/mmux-chicken-template.$(MMUX_SOEXT): $(MMUX_TEMPLATE_OBJECTS)
-	$(CSC_LINK_LIBRARY) $(@) $(^)
+	$(MMUX_LIB_ENV) $(CSC_LINK_LIBRARY) $(@) $(^)
+	@echo
 
 
 #### interface to "make check"
@@ -179,10 +191,10 @@ lib/mmux-chicken-template.$(MMUX_SOEXT): $(MMUX_TEMPLATE_OBJECTS)
 # understand how to use this interface for "make check".
 #
 
-MMUX_CHECK_REPOSITORY_PATH	= $(abs_builddir)/src:$(CHICKEN_REPOSITORY_PATH)
-MMUX_CHECK_LD_PATH		= $(builddir)/src:$(LD_LIBRARY_PATH)
-MMUX_CHECK_DYLD_PATH		= $(builddir)/src:$(DYLD_LIBRARY_PATH)
-MMUX_CHECK_SOURCE_PATH		= $(srcdir)/tests:$(srcdir)/src
+MMUX_CHECK_REPOSITORY_PATH	= $(abs_builddir)/lib:$(CHICKEN_REPOSITORY_PATH)
+MMUX_CHECK_LD_PATH		= $(builddir)/lib:$(LD_LIBRARY_PATH)
+MMUX_CHECK_DYLD_PATH		= $(builddir)/lib:$(DYLD_LIBRARY_PATH)
+MMUX_CHECK_SOURCE_PATH		= $(srcdir)/tests:$(srcdir)/lib
 
 # Let's make  sure the  compiler and  the test  programs can  find the
 # libraries built by this package.
@@ -202,25 +214,35 @@ MMUX_CHECK_ENV			+= \
 	MMUX_SRCDIR=$(srcdir)/tests;			export MMUX_SRCDIR;		\
 	MMUX_BUILDDIR=$(builddir);			export MMUX_BUILDDIR;
 
-check_PROGRAMS	= \
+## --------------------------------------------------------------------
+
+MMUX_CHECK_PROGS	= \
 	tests/test-version
 
-if MMUX_TESTING_ENABLED
-TESTS				= $(check_PROGRAMS)
-endif
+MMUX_CHECK_OBJECTS	= \
+	tests/test-version.$(OBJEXT)
 
-MMUX_TEMPLATE_CHECK_DEPS	= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_TEMPLATE_IMPORT_LIBS) tests/$(am__dirstamp)
+CLEANFILES		+= $(MMUX_CHECK_OBJECTS)
+
+check_PROGRAMS		= $(MMUX_CHECK_PROGS)
+if MMUX_TESTING_ENABLED
+TESTS			= $(check_PROGRAMS)
+endif
+AM_TESTS_ENVIRONMENT	= $(MMUX_CHECK_ENV)
+
+MMUX_TEMPLATE_CHECK_DEPS= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_TEMPLATE_IMPORT_LIBS) tests/$(am__dirstamp)
 
 ## --------------------------------------------------------------------
 
 tests_test_version_SOURCES	= tests/test-version.scm
 
 tests/test-version.$(OBJEXT): tests/test-version.scm $(MMUX_TEMPLATE_CHECK_DEPS)
-#	$(MMUX_CHECK_ENV) csi -R chicken.platform -p '(repository-path)'
 	$(MMUX_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
+	@echo
 
 tests/test-version$(EXEEXT): tests/test-version.$(OBJEXT)
 	$(MMUX_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
+	@echo
 
 
 #### interface to "make instcheck"
@@ -251,12 +273,15 @@ installcheck-local: $(TESTS)
 	@for f in $(TESTS); do $(builddir)/$$f; done
 
 
-#### running the interpreter
+#### running the interpreter and the tests
 
-.PHONY: repl
+.PHONY: repl test tests
 
 repl:
 	$(MMUX_CHECK_ENV) $(CHICKEN_INTERPRETER)
+
+test tests:
+	for f in $(builddir)/tests/test-*$(file); do $(MMUX_CHECK_ENV) $$f; done
 
 
 #### common rules

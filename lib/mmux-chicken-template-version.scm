@@ -6,7 +6,8 @@
 ;;;
 ;;;Abstract
 ;;;
-;;;	This unit defines version functions.
+;;;	This unit defines version functions.  This is the one compilation unit in the
+;;;	shared library that does not DECLARE itself with UNIT.
 ;;;
 ;;;Copyright (C) 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 ;;;
@@ -26,7 +27,7 @@
 
 ;;;; units and module header
 
-(declare (unit mmux-chicken-template-version)
+(declare #;(unit mmux-chicken-template-version)
 	 (emit-import-library mmux-chicken-template-version))
 
 (module (mmux-chicken-template-version)
