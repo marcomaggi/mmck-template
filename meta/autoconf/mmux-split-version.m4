@@ -1,18 +1,26 @@
 #
 # SYNOPSIS
 #
-#   MMUX_SPLIT_VERSION(STEM,VERSION_NUMBER)
+#   MMUX_SPLIT_VERSION(DESCRIPTION,STEM,VERSION_NUMBER)
 #
 # DESCRIPTION
 #
 #   Split  a version  number in  the format  MAJOR.MINOR.POINT into  its
-#   separate components.
+#   separate components, cache the results in three variables.
 #
-#   Set the variables:
+#   DESCRIPTION must be a string describing the version number.
+#
+#   STEM must be a string variable stem used to compose the names of the
+#   cache variables, which will be:
 #
 #      ${STEM}_MAJOR_VERSION
 #      ${STEM}_MINOR_VERSION
 #      ${STEM}_PATCH_VERSION
+#
+#   Usage example:
+#
+#      MMUX_SPLIT_VERSION([CHICHEN release],
+#        [mmux_cv_chicken_release],5.0.0)
 #
 #   This macro is derived from AX_SPLIT_VERSION, which we can find at:
 #
@@ -28,15 +36,23 @@
 #   notice and  this notice are  preserved. This file is  offered as-is,
 #   without any warranty.
 
-#serial 10
-
 AC_DEFUN([MMUX_SPLIT_VERSION],[
-    AC_REQUIRE([AC_PROG_SED])
-    AS_VAR_PUSHDEF([MMUX_AX_SPLIT_VERSION_INPUT],[$2])
-    AS_VAR_SET($1_MAJOR_VERSION,[`echo "$MMUX_AX_SPLIT_VERSION" | "$SED" 's/\([[^.]][[^.]]*\).*/\1/'`])
-    AS_VAR_SET($1_MINOR_VERSION,[`echo "$MMUX_AX_SPLIT_VERSION" | "$SED" 's/[[^.]][[^.]]*.\([[^.]][[^.]]*\).*/\1/'`])
-    AS_VAR_SET($1_PATCH_VERSION,[`echo "$MMUX_AX_SPLIT_VERSION" | "$SED" 's/[[^.]][[^.]]*.[[^.]][[^.]]*.\(.*\)/\1/'`])
-    AS_VAR_POPDEF([MMUX_AX_SPLIT_VERSION_INPUT])
+    AS_VAR_SET([MMUX_AX_SPLIT_VERSION_INPUT],$3)
+
+    AC_CACHE_CHECK([$1 major version],
+      [$2[]_MAJOR_VERSION],
+      [AC_REQUIRE([AC_PROG_SED])
+       AS_VAR_SET($2[]_MAJOR_VERSION,[`echo "$MMUX_AX_SPLIT_VERSION_INPUT" | "$SED" 's/\([[^.]][[^.]]*\).*/\1/'`])])
+
+    AC_CACHE_CHECK([$1 major version],
+      [$2[]_MINOR_VERSION],
+      [AC_REQUIRE([AC_PROG_SED])
+       AS_VAR_SET($2[]_MINOR_VERSION,[`echo "$MMUX_AX_SPLIT_VERSION_INPUT" | "$SED" 's/[[^.]][[^.]]*.\([[^.]][[^.]]*\).*/\1/'`])])
+
+    AC_CACHE_CHECK([$1 major version],
+      [$2[]_PATCH_VERSION],
+      [AC_REQUIRE([AC_PROG_SED])
+       AS_VAR_SET($2[]_PATCH_VERSION,[`echo "$MMUX_AX_SPLIT_VERSION_INPUT" | "$SED" 's/[[^.]][[^.]]*.[[^.]][[^.]]*.\(.*\)/\1/'`])])
 ])
 
 ### end of file

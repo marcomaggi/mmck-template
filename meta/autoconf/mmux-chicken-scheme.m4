@@ -34,17 +34,17 @@ AC_DEFUN([MMUX_CHICKEN_SCHEME],
    AC_PATH_PROG([CHICKEN_INTERPRETER],[csi],[:])
 
    AC_CACHE_CHECK([CHICKEN release number],
-     [mmux_cv_chicken_release_number],
-     [AS_VAR_SET(mmux_cv_chicken_release_number,[$("$CHICKEN_INTERPRETER" -release)])
-      MMUX_SPLIT_VERSION([mmux_cv_chicken_release],[$CHICKEN_RELEASE_NUMBER])])
-   AS_VAR_SET(CHICKEN_RELEASE_NUMBER,[$mmux_cv_chicken_release_number])
-   AS_VAR_SET(CHICKEN_RELEASE_MAJOR, [$mmux_cv_chicken_release_major])
-   AS_VAR_SET(CHICKEN_RELEASE_MINOR, [$mmux_cv_chicken_release_minor])
-   AS_VAR_SET(CHICKEN_RELEASE_PATCH, [$mmux_cv_chicken_release_patch])
-   AC_SUBST([CHICKEN_RELEASE_NUMBER])
-   AC_SUBST([CHICKEN_RELEASE_MAJOR])
-   AC_SUBST([CHICKEN_RELEASE_MINOR])
-   AC_SUBST([CHICKEN_RELEASE_MAJOR])
+     [mmux_cv_chicken_release_NUMBER],
+     [AS_VAR_SET(mmux_cv_chicken_release_NUMBER,[$("$CHICKEN_INTERPRETER" -release)])])
+   AS_VAR_SET(CHICKEN_RELEASE_NUMBER,[$mmux_cv_chicken_release_NUMBER])
+   AC_SUBST([CHICKEN_RELEASE_NUMBER],[$CHICKEN_RELEASE_NUMBER])
+   MMUX_SPLIT_VERSION([CHICHEN release],[mmux_cv_chicken_release],[$mmux_cv_chicken_release_NUMBER])
+   AS_VAR_SET(CHICKEN_RELEASE_MAJOR, [$mmux_cv_chicken_release_MAJOR_VERSION])
+   AS_VAR_SET(CHICKEN_RELEASE_MINOR, [$mmux_cv_chicken_release_MINOR_VERSION])
+   AS_VAR_SET(CHICKEN_RELEASE_PATCH, [$mmux_cv_chicken_release_PATCH_VERSION])
+   AC_SUBST([CHICKEN_RELEASE_MAJOR],[$CHICKEN_RELEASE_MAJOR])
+   AC_SUBST([CHICKEN_RELEASE_MINOR],[$CHICKEN_RELEASE_MINOR])
+   AC_SUBST([CHICKEN_RELEASE_PATCH],[$CHICKEN_RELEASE_PATCH])
 
    # Determine where shared libraries should be installed.
    #
