@@ -103,6 +103,19 @@ $ make check
 $ make install
 ```
 
+When compiling  the environment  variable CHICKEN_FLAGS is  available to
+hand options to the compiler:
+
+```
+$ make CHICKEN_FLAGS='-d3'
+```
+
+Shared libraries will be installed under:
+
+```
+${libdir}/chicken/9
+```
+
 ## Usage
 
 Read the documentation generated from  the Texinfo sources.  The package

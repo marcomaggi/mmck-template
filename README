@@ -105,6 +105,15 @@ proper release tarball, but we have to enable maintainer mode:
     $ make check
     $ make install
 
+  When compiling the environment  variable CHICKEN_FLAGS is available to
+hand options to the compiler:
+
+    $ make CHICKEN_FLAGS='-d3'
+
+  Shared libraries will be installed under:
+
+			  ${libdir}/chicken/9
+
 
 4. Usage
 --------
