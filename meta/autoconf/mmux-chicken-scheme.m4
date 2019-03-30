@@ -6,13 +6,16 @@ AC_DEFUN([MMUX_CHICKEN_SCHEME],
   [AC_PATH_PROG([CHICKEN_COMPILER],[csc],[:])
    AC_PATH_PROG([CHICKEN_INTERPRETER],[csi],[:])
 
-   MMUX_CHICKEN_LIBDIR=${libdir}/chicken/9
+   # Determine where shared libraries should be installed.
+   #
+   AS_VAR_SET(MMUX_CHICKEN_LIBDIR,[${libdir}/chicken/9])
+   AC_MSG_NOTICE([CHICKEN libraries will be installed under: $MMUX_CHICKEN_LIBDIR])
    AC_SUBST([MMUX_CHICKEN_LIBDIR])
    ])
 
 # Set version numbers for libraries built with CHICKEN.
 #
-#   MM_CHICKEN_LIBRARY_VERSIONS(stem,current,revision,age)
+#   MMUX_CHICKEN_LIBRARY_VERSIONS(stem,current,revision,age)
 #
 AC_DEFUN([MMUX_CHICKEN_LIBRARY_VERSIONS],
   [AS_VAR_SET([$1_VERSION_INTERFACE_CURRENT],[$2])
