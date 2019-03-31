@@ -6,9 +6,7 @@
 ;;;
 ;;;Abstract
 ;;;
-;;;	This is the  main compilation unit; this  is the one compilation  unit in the
-;;;	shared library that does not DECLARE itself with UNIT.  This compilation unit
-;;;	USES all the other compilation units.
+;;;	This is the main compilation unit; it USES all the other compilation units.
 ;;;
 ;;;	This compilation  units defines the main  module: it imports all  the modules
 ;;;	exporting  public syntactic  bindings  and it  reexports  all such  syntactic
@@ -32,7 +30,8 @@
 
 ;;;; units and module header
 
-(declare (uses mmux-chicken-template-alpha)
+(declare (unit mmux-chicken-template)
+	 (uses mmux-chicken-template-alpha)
 	 (uses mmux-chicken-template-version)
 	 (emit-import-library mmux-chicken-template))
 
