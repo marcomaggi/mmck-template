@@ -21,6 +21,11 @@ then libdir=${prefix}/lib64
 else libdir=${prefix}/lib
 fi
 
+if test "$TRAVIS_OS_NAME" = osx
+then THE_PLATFORM=macosx
+else THE_PLATFORM=linux
+fi
+
 function main () {
     # We install the new package only if it is not already installed.
     if type -p "$VERSION_EXECUTABLE"
@@ -42,11 +47,11 @@ function main () {
 
     cd "$TOP_SRCDIR"
 
-    if ! gmake PLATFORM=linux PREFIX="$prefix" LIBDIR="$libdir"
+    if ! make PLATFORM=$THE_PLATFORM PREFIX="$prefix" LIBDIR="$libdir"
     then script_error 'error building all %s' "$STEM"
     fi
 
-    if ! (umask 0; sudo gmake install PLATFORM=linux PREFIX="$prefix" LIBDIR="$libdir")
+    if ! (umask 0; sudo make install PLATFORM=$THE_PLATFORM PREFIX="$prefix" LIBDIR="$libdir")
     then script_error 'error installing %s' "$STEM"
     fi
 

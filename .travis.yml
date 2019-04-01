@@ -155,7 +155,7 @@ before_script:
   - echo pkg-config --version ; pkg-config --version;
   - echo autoconf --version ; autoconf --version;
   - echo automake --version ; automake --version;
-  - if test "$TRAVIS_OS_NAME" = osx ; then export LIBTOOLIZE=glibtoolize; else true; fi; sh ./autogen.sh;
+  - sh ./autogen.sh;
 
 matrix:
   fast_finish: true
