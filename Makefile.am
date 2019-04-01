@@ -12,18 +12,19 @@ OBJEXT			= o
 
 # This is the extension of the shared object libraries.
 #
-if ON_LINUX
+# if ON_LINUX
+# MMUX_SOEXT		= so
+# endif
+# if ON_BSD
+# MMUX_SOEXT		= so
+# endif
+# if ON_CYGWIN
+# MMUX_SOEXT		= dll
+# endif
+# if ON_DARWIN
+# MMUX_SOEXT		= dylib
+# endif
 MMUX_SOEXT		= so
-endif
-if ON_BSD
-MMUX_SOEXT		= so
-endif
-if ON_CYGWIN
-MMUX_SOEXT		= dll
-endif
-if ON_DARWIN
-MMUX_SOEXT		= dylib
-endif
 
 MV			= mv
 
