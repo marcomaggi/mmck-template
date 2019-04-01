@@ -1,4 +1,4 @@
-# cctemplate
+# MMUX CHICKEN Template
 
 [![Build Status](https://travis-ci.org/marcomaggi/mmux-chicken-template.svg?branch=master)](https://travis-ci.org/marcomaggi/mmux-chicken-template)
 
