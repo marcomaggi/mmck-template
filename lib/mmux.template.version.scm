@@ -1,12 +1,12 @@
 ;;; -*- coding: utf-8-unix  -*-
 ;;;
 ;;;Part of: MMUX CHICKEN Template
-;;;Contents: module alpha
-;;;Date: Mar 29, 2019
+;;;Contents: version functions
+;;;Date: Fri Mar 29, 2019
 ;;;
 ;;;Abstract
 ;;;
-;;;	This unit defines the module ALPHA.
+;;;	This unit defines version functions.
 ;;;
 ;;;Copyright (C) 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 ;;;
@@ -26,18 +26,31 @@
 
 ;;;; units and module header
 
-(declare (unit mmux-chicken-template-alpha)
-	 (emit-import-library mmux-chicken-template-alpha))
+(declare (unit mmux.template.version)
+	 (emit-import-library mmux.template.version))
 
-(module (mmux-chicken-template-alpha)
-    (the-func)
-  (import (scheme))
+(module (mmux.template.version)
+    (mmux-template-version-string
+     mmux-template-version-interface-current
+     mmux-template-version-interface-revision
+     mmux-template-version-interface-age)
+  (import (scheme)
+	  (prefix mmux.template.config config::))
 
 
-;;;; miscellaneous functions
+;;;; version functions
 
-(define (the-func)
-  #t)
+(define (mmux-template-version-string)
+  config::mmux_chicken_template_VERSION_INTERFACE_STRING)
+
+(define (mmux-template-version-interface-current)
+  config::mmux_chicken_template_VERSION_INTERFACE_CURRENT)
+
+(define (mmux-template-version-interface-revision)
+  config::mmux_chicken_template_VERSION_INTERFACE_REVISION)
+
+(define (mmux-template-version-interface-age)
+  config::mmux_chicken_template_VERSION_INTERFACE_AGE)
 
 
 ;;;; done

@@ -162,24 +162,29 @@ Indexes
 @chapter Overview of the package
 
 
+@cindex @library{mmux template}, library
+@cindex Library @library{mmux template}
+
+
 This document describes version @value{VERSION} of @value{PACKAGE}, a CHICKEN language library
-implementing a template library.
+implementing a template library.  CHICKEN is a Scheme-to-C compiler supporting the language features
+as defined in the ``Revised^5 Report on Scheme''.
 
 This package supports @posix{} platforms.
 
-The package installs the library @library{mmux-chicken-template} along with its import library.  To
-require the library and import its syntactic bindings in a module we can do:
+The package installs the library @library{mmux template} along with its import library.  To require
+the library and import its syntactic bindings in a module we can do:
 
 @example
 (declare (unit my-module)
          (emit-import-library my-module))
 
-(require-library mmux-chicken-template)
+(require-library (mmux template))
 
 (module (my-module)
     ()
   (import (scheme)
-    (mmux-chicken-template)
+    (mmux template)
     (chicken pretty-print))
 
   ...
@@ -197,22 +202,22 @@ explanation of interface numbers as managed by @gnu{} Libtool @xref{Libtool vers
 Libtool's versioning system, libtool, Shared library support for @gnu{}}.
 
 
-@defun mmux-chicken-template-version-string
+@defun mmux-template-version-string
 Return a string representing the interface version number.
 @end defun
 
 
-@defun mmux-chicken-template-version-interface-current
+@defun mmux-template-version-interface-current
 Return an integer representing the library interface current number.
 @end defun
 
 
-@defun mmux-chicken-template-version-interface-revision
+@defun mmux-template-version-interface-revision
 Return an integer representing the library interface current revision number.
 @end defun
 
 
-@defun mmux-chicken-template-version-interface-age
+@defun mmux-template-version-interface-age
 Return an integer representing the library interface current age.
 @end defun
 

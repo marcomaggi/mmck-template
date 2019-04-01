@@ -21,39 +21,39 @@ doc_mmux_chicken_template_TEXINFOS = \
 # All the source files of the extension library.
 #
 MMUX_TEMPLATE_MODULES		= \
-	lib/mmux-chicken-template-alpha.scm		\
-	lib/mmux-chicken-template-version.scm		\
-	lib/mmux-chicken-template.scm
+	lib/mmux.template.alpha.scm		\
+	lib/mmux.template.version.scm		\
+	lib/mmux.template.scm
 
 # All the object files that must be linked in the extension library.
 #
 MMUX_TEMPLATE_OBJECTS		= \
-	lib/mmux-chicken-template-alpha.$(OBJEXT)	\
-	lib/mmux-chicken-template-version.$(OBJEXT)	\
-	lib/mmux-chicken-template.$(OBJEXT)
+	lib/mmux.template.alpha.$(OBJEXT)	\
+	lib/mmux.template.version.$(OBJEXT)	\
+	lib/mmux.template.$(OBJEXT)
 
 # All the source files of all the modules' import libraries.
 #
 MMUX_TEMPLATE_IMPORT_SOURCES	= \
-	lib/mmux-chicken-template-alpha.import.scm	\
-	lib/mmux-chicken-template-version.import.scm	\
-	lib/mmux-chicken-template.import.scm
+	lib/mmux.template.alpha.import.scm	\
+	lib/mmux.template.version.import.scm	\
+	lib/mmux.template.import.scm
 
 # This does not include:
 #
-#   lib/mmux-chicken-template.import.$(MMUX_SOEXT)
+#   lib/mmux.template.import.$(MMUX_SOEXT)
 #
 MMUX_TEMPLATE_IMPORT_LIBS	= \
-	lib/mmux-chicken-template-alpha.import.$(MMUX_SOEXT)	\
-	lib/mmux-chicken-template-version.import.$(MMUX_SOEXT)
+	lib/mmux.template.alpha.import.$(MMUX_SOEXT)	\
+	lib/mmux.template.version.import.$(MMUX_SOEXT)
 
 # This is the extension library file pathname.
 #
-MMUX_TEMPLATE_LIBRARY		= lib/mmux-chicken-template.$(MMUX_SOEXT)
+MMUX_TEMPLATE_LIBRARY		= lib/mmux.template.$(MMUX_SOEXT)
 
 # This is the import library file pathname.
 #
-MMUX_TEMPLATE_IMPORT_LIBRARY	= lib/mmux-chicken-template.import.$(MMUX_SOEXT)
+MMUX_TEMPLATE_IMPORT_LIBRARY	= lib/mmux.template.import.$(MMUX_SOEXT)
 
 ## --------------------------------------------------------------------
 
@@ -82,24 +82,24 @@ template_SCRIPTS	= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_TEMPLATE_IMPORT_LIBRARY)
 
 ## --------------------------------------------------------------------
 
-lib/mmux-chicken-template-version.$(OBJEXT): lib/mmux-chicken-template-version.scm $(MMUX_OBJECTS_DEPS)
+lib/mmux.template.version.$(OBJEXT): lib/mmux.template.version.scm $(MMUX_OBJECTS_DEPS)
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<) -prologue lib/config.scm
-	@$(MV) mmux-chicken-template-version.import.scm lib/mmux-chicken-template-version.import.scm
+	@$(MV) mmux.template.version.import.scm lib/mmux.template.version.import.scm
 
-lib/mmux-chicken-template-version.import.scm: lib/mmux-chicken-template-version.$(OBJEXT)
+lib/mmux.template.version.import.scm: lib/mmux.template.version.$(OBJEXT)
 
-lib/mmux-chicken-template-version.import.$(MMUX_SOEXT): lib/mmux-chicken-template-version.import.scm
+lib/mmux.template.version.import.$(MMUX_SOEXT): lib/mmux.template.version.import.scm
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
 
 ## --------------------------------------------------------------------
 
-lib/mmux-chicken-template-alpha.$(OBJEXT): lib/mmux-chicken-template-alpha.scm $(MMUX_OBJECTS_DEPS)
+lib/mmux.template.alpha.$(OBJEXT): lib/mmux.template.alpha.scm $(MMUX_OBJECTS_DEPS)
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
-	@$(MV) mmux-chicken-template-alpha.import.scm lib/mmux-chicken-template-alpha.import.scm
+	@$(MV) mmux.template.alpha.import.scm lib/mmux.template.alpha.import.scm
 
-lib/mmux-chicken-template-alpha.import.scm: lib/mmux-chicken-template-alpha.$(OBJEXT)
+lib/mmux.template.alpha.import.scm: lib/mmux.template.alpha.$(OBJEXT)
 
-lib/mmux-chicken-template-alpha.import.$(MMUX_SOEXT): lib/mmux-chicken-template-alpha.import.scm
+lib/mmux.template.alpha.import.$(MMUX_SOEXT): lib/mmux.template.alpha.import.scm
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
 
 ## --------------------------------------------------------------------
@@ -107,13 +107,13 @@ lib/mmux-chicken-template-alpha.import.$(MMUX_SOEXT): lib/mmux-chicken-template-
 # This is the main compilation unit and it defines the main module; it
 # depends upon all the import libraries of the other modules.
 #
-lib/mmux-chicken-template.$(OBJEXT): lib/mmux-chicken-template.scm $(MMUX_TEMPLATE_IMPORT_LIBS) $(MMUX_OBJECTS_DEPS)
+lib/mmux.template.$(OBJEXT): lib/mmux.template.scm $(MMUX_TEMPLATE_IMPORT_LIBS) $(MMUX_OBJECTS_DEPS)
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
-	@$(MV) mmux-chicken-template.import.scm lib/mmux-chicken-template.import.scm
+	@$(MV) mmux.template.import.scm lib/mmux.template.import.scm
 
-lib/mmux-chicken-template.import.scm: lib/mmux-chicken-template.$(OBJEXT)
+lib/mmux.template.import.scm: lib/mmux.template.$(OBJEXT)
 
-$(MMUX_TEMPLATE_IMPORT_LIBRARY): lib/mmux-chicken-template.import.scm
+$(MMUX_TEMPLATE_IMPORT_LIBRARY): lib/mmux.template.import.scm
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
 
 ## --------------------------------------------------------------------
@@ -135,7 +135,7 @@ MMUX_CHECK_OBJECTS	= \
 	tests/test-version.$(OBJEXT)
 
 MMUX_CHECK_PROGS	= \
-	tests/test-version
+	tests/test-version.exe
 
 CLEANFILES	+= $(MMUX_CHECK_PROGS) $(MMUX_CHECK_OBJECTS)
 TESTS		= $(MMUX_CHECK_PROGS)
@@ -147,7 +147,7 @@ MMUX_CHECK_DEPS	+= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_TEMPLATE_IMPORT_LIBS)
 tests/test-version.$(OBJEXT): tests/test-version.scm $(MMUX_CHECK_DEPS)
 	$(MMUX_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
 
-tests/test-version: tests/test-version.$(OBJEXT)
+tests/test-version.exe: tests/test-version.$(OBJEXT)
 	$(MMUX_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
 
 ### end of file

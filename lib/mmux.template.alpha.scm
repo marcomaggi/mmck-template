@@ -1,16 +1,12 @@
 ;;; -*- coding: utf-8-unix  -*-
 ;;;
 ;;;Part of: MMUX CHICKEN Template
-;;;Contents: main compilation unit
+;;;Contents: module alpha
 ;;;Date: Mar 29, 2019
 ;;;
 ;;;Abstract
 ;;;
-;;;	This is the main compilation unit; it USES all the other compilation units.
-;;;
-;;;	This compilation  units defines the main  module: it imports all  the modules
-;;;	exporting  public syntactic  bindings  and it  reexports  all such  syntactic
-;;;	bindings.
+;;;	This unit defines the module ALPHA.
 ;;;
 ;;;Copyright (C) 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 ;;;
@@ -30,16 +26,22 @@
 
 ;;;; units and module header
 
-(declare (unit mmux-chicken-template)
-	 (uses mmux-chicken-template-alpha)
-	 (uses mmux-chicken-template-version)
-	 (emit-import-library mmux-chicken-template))
+(declare (unit mmux.template.alpha)
+	 (emit-import-library mmux.template.alpha))
 
-(module (mmux-chicken-template)
-    ()
-  (import (only (chicken module) reexport))
-  (reexport (mmux-chicken-template-alpha))
-  (reexport (mmux-chicken-template-version))
-  #| end of module |# )
+(module (mmux.template.alpha)
+    (the-func)
+  (import (scheme))
+
+
+;;;; miscellaneous functions
+
+(define (the-func)
+  #t)
+
+
+;;;; done
+
+#| end of module |# )
 
 ;;; end of file

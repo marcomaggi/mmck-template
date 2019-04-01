@@ -1,12 +1,16 @@
 ;;; -*- coding: utf-8-unix  -*-
 ;;;
 ;;;Part of: MMUX CHICKEN Template
-;;;Contents: test program for version functions
+;;;Contents: main compilation unit
 ;;;Date: Mar 29, 2019
 ;;;
 ;;;Abstract
 ;;;
-;;;	This program tests version functions.
+;;;	This is the main compilation unit; it USES all the other compilation units.
+;;;
+;;;	This compilation  units defines the main  module: it imports all  the modules
+;;;	exporting  public syntactic  bindings  and it  reexports  all such  syntactic
+;;;	bindings.
 ;;;
 ;;;Copyright (C) 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 ;;;
@@ -26,25 +30,16 @@
 
 ;;;; units and module header
 
-(require-library (mmux template))
+(declare (unit mmux.template)
+	 (uses mmux.template.alpha)
+	 (uses mmux.template.version)
+	 (emit-import-library mmux.template))
 
-(module (test-version)
+(module (mmux.template)
     ()
-  (import (scheme)
-    (mmux template)
-    (chicken pretty-print))
-
-
-;;;; stuff
-
-(pretty-print (list 'version-string		(mmux-template-version-string)))
-(pretty-print (list 'version-interface-current	(mmux-template-version-interface-current)))
-(pretty-print (list 'version-interface-revision	(mmux-template-version-interface-revision)))
-(pretty-print (list 'version-interface-age	(mmux-template-version-interface-age)))
-
-
-;;;; done
-
-#| end of module |# )
+  (import (only (chicken module) reexport))
+  (reexport (mmux.template.alpha))
+  (reexport (mmux.template.version))
+  #| end of module |# )
 
 ;;; end of file
