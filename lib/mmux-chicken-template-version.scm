@@ -30,9 +30,12 @@
 	 (emit-import-library mmux-chicken-template-version))
 
 (module (mmux-chicken-template-version)
-    *
+    (mmux-chicken-template-version-string
+     mmux-chicken-template-version-interface-current
+     mmux-chicken-template-version-interface-revision
+     mmux-chicken-template-version-interface-age)
   (import (scheme)
-    (prefix mmux-chicken-template-config config::))
+	  (prefix mmux-chicken-template-config config::))
 
 
 ;;;; version functions
