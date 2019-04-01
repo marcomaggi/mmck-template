@@ -47,11 +47,11 @@ function main () {
 
     cd "$TOP_SRCDIR"
 
-    if ! make PLATFORM=$THE_PLATFORM PREFIX="$prefix" LIBDIR="$libdir"
+    if ! make -j 1 PLATFORM=$THE_PLATFORM PREFIX="$prefix" LIBDIR="$libdir"
     then script_error 'error building all %s' "$STEM"
     fi
 
-    if ! (umask 0; sudo make install PLATFORM=$THE_PLATFORM PREFIX="$prefix" LIBDIR="$libdir")
+    if ! (umask 0; sudo make -j 1 install PLATFORM=$THE_PLATFORM PREFIX="$prefix" LIBDIR="$libdir")
     then script_error 'error installing %s' "$STEM"
     fi
 
