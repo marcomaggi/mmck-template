@@ -269,9 +269,9 @@ MMUX_CHECK_ENV			= \
 # both at expand-time and at run-time.
 #
 MMUX_CHECK_ENV			+= \
-	MMUX_CHECK_QUIET=yes;				export MMUX_CHECK_QUIET;	\
+	CHECKS_QUIET=yes;				export CHECKS_QUIET;		\
+	CHECKS_TEST_NAME=$(name);			export CHECKS_TEST_NAME;	\
 	MMUX_SOURCE_PATH=$(MMUX_CHECK_SOURCE_PATH);	export MMUX_SOURCE_PATH;	\
-	CHECK_TEST_NAME=$(name);			export CHECK_TEST_NAME;		\
 	MMUX_SRCDIR=$(srcdir)/tests;			export MMUX_SRCDIR;		\
 	MMUX_BUILDDIR=$(builddir);			export MMUX_BUILDDIR;
 
@@ -330,9 +330,9 @@ MMUX_INSTALLCHECK_ENV			= \
 # both at expand-time and at run-time.
 #
 MMUX_INSTALLCHECK_ENV			+= \
-	MMUX_CHECK_QUIET=yes;				export MMUX_INSTALLCHECK_QUIET;	\
+	CHECKS_QUIET=yes;				export CHECKS_QUIET;		\
+	CHECKS_TEST_NAME=$(name);			export CHECKS_TEST_NAME;	\
 	MMUX_SOURCE_PATH=$(MMUX_CHECK_SOURCE_PATH);	export MMUX_SOURCE_PATH;	\
-	CHECK_TEST_NAME=$(name);			export CHECK_TEST_NAME;		\
 	MMUX_SRCDIR=$(srcdir)/tests;			export MMUX_SRCDIR;		\
 	MMUX_BUILDDIR=$(builddir);			export MMUX_BUILDDIR;
 

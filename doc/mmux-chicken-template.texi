@@ -164,7 +164,7 @@ implementing a template library.
 
 This package supports @posix{} platforms.
 
-The package installs the library @code{mmux-chicken-template} along with its import library.  To
+The package installs the library @library{mmux-chicken-template} along with its import library.  To
 require the library and import its syntactic bindings in a module we can do:
 
 @example
