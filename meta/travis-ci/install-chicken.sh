@@ -42,10 +42,6 @@ function main () {
 
     cd "$TOP_SRCDIR"
 
-    if ! ./configure --prefix="$prefix" --with-internal-glib
-    then script_error 'error configuring %s' "$STEM"
-    fi
-
     if ! make PLATFORM=linux PREFIX="$prefix" LIBDIR="$libdir"
     then script_error 'error building all %s' "$STEM"
     fi
