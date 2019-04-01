@@ -96,7 +96,7 @@ CSC_COMPILE_OBJECT_STATIC	= $(CHICKEN_COMPILER) $(AM_CHICKEN_FLAGS_OBJECT_STATIC
 # Compile object files into a shared  library.  We use this for import
 # libraries.
 #
-CSC_COMPILE_LIBRARY		= $(CHICKEN_COMPILER) -dynamic $(AM_CHICKEN_LIBFLAGS) -o
+CSC_COMPILE_LIBRARY		= $(CHICKEN_COMPILER) $(AM_CHICKEN_LIBFLAGS) -o
 
 # Link object files into a shared library.
 #
