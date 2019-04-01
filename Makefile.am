@@ -8,22 +8,12 @@ dist_doc_DATA		= README COPYING
 MAINTAINERCLEANFILES	= lib/config.scm
 CLEANFILES		=
 
-OBJEXT			= o
-
-# This is the extension of the shared object libraries.
+# File  name  extensions  for  shared objects  and  shared  libraries.
+# Notice that, on every platform,  CHICKEN uses ".so" as extension for
+# shared  libraries;  it  does  not  care  about  ".dll"  or  ".dyld".
+# Because.
 #
-# if ON_LINUX
-# MMUX_SOEXT		= so
-# endif
-# if ON_BSD
-# MMUX_SOEXT		= so
-# endif
-# if ON_CYGWIN
-# MMUX_SOEXT		= dll
-# endif
-# if ON_DARWIN
-# MMUX_SOEXT		= dylib
-# endif
+OBJEXT			= o
 MMUX_SOEXT		= so
 
 MV			= mv
