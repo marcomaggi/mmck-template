@@ -280,11 +280,13 @@ MMUX_CHECK_ENV			+= \
 EXTRA_DIST		+= \
 	tests/test-version.scm
 
+MMUX_CHECK_OBJECTS	= \
+	tests/test-version.$(OBJEXT)
+
 MMUX_CHECK_PROGS	= \
 	tests/test-version
 
-MMUX_CHECK_OBJECTS	= \
-	tests/test-version.$(OBJEXT)
+## --------------------------------------------------------------------
 
 CLEANFILES		+= $(MMUX_CHECK_PROGS) $(MMUX_CHECK_OBJECTS)
 TESTS			= $(MMUX_CHECK_PROGS)
