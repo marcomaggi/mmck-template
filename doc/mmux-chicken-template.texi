@@ -35,6 +35,8 @@
 @c list of copyright years.
 @set COPYRIGHT_YEARS            2019
 
+@set CHICKEN_VERSION            5.0.0
+
 @c ------------------------------------------------------------
 
 @set PackageAutoconfPrefix              MMUX_CHICKEN_TEMPLATE
@@ -67,7 +69,8 @@
 This document describes version @value{VERSION} of @value{PACKAGE}, a CHICKEN language library
 implementing a template library.
 
-The library supports @posix{} platforms.
+The library supports @posix{} platforms.  This package has been tested with CHICKEN version
+@value{CHICKEN_VERSION}.
 
 This package is distributed under the terms of the @gnu{} Lesser General Public License (@lgpl{}).
 
