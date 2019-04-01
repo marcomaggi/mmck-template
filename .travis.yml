@@ -172,6 +172,7 @@ matrix:
           packages:
           - gcc-8
       script: |
+        export CHICKEN_REPOSITORY_PATH=$(csi -R chicken.platform -p '(car (repository-path))');
         ./configure --enable-maintainer-mode;
         make all;
         make check;
@@ -183,6 +184,7 @@ matrix:
       osx_image: xcode10.1
       compiler: clang
       script: |
+        export CHICKEN_REPOSITORY_PATH=$(csi -R chicken.platform -p '(car (repository-path))');
         ./configure --enable-maintainer-mode;
         make all;
         make check;
