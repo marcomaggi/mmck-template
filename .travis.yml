@@ -144,6 +144,7 @@ install:
   - ./meta/travis-ci/install-autoconf.sh;
   - ./meta/travis-ci/install-automake.sh;
   - ./meta/travis-ci/install-texinfo.sh;
+  - ./meta/travis-ci/install-chicken.sh;
 
 #page
 #### build scripts
@@ -170,7 +171,6 @@ matrix:
           - ubuntu-toolchain-r-test
           packages:
           - gcc-8
-          - chicken
       script: |
         ./configure --enable-maintainer-mode;
         make all;
@@ -182,12 +182,8 @@ matrix:
     - os: osx
       osx_image: xcode10.1
       compiler: clang
-      addons:
-        homebrew:
-          packages:
-            - chicken
       script: |
-        ./configure --enable-maintainer-mode CFLAGS='-Wno-unknown-attributes';
+        ./configure --enable-maintainer-mode;
         make all;
         make check;
         (umask 0; sudo make install);
