@@ -133,13 +133,16 @@ $(MMUX_TEMPLATE_LIBRARY): $(MMUX_TEMPLATE_OBJECTS)
 #
 
 EXTRA_DIST		+= \
-	tests/test-version.scm
+	tests/test-version.scm		\
+	tests/test-alpha.scm
 
 MMUX_CHECK_OBJECTS	= \
-	tests/test-version.$(OBJEXT)
+	tests/test-version.$(OBJEXT)	\
+	tests/test-alpha.$(OBJEXT)
 
 MMUX_CHECK_PROGS	= \
-	tests/test-version.exe
+	tests/test-version.exe		\
+	tests/test-alpha.exe
 
 CLEANFILES	+= $(MMUX_CHECK_PROGS) $(MMUX_CHECK_OBJECTS)
 TESTS		= $(MMUX_CHECK_PROGS)
@@ -152,6 +155,14 @@ tests/test-version.$(OBJEXT): tests/test-version.scm $(MMUX_CHECK_DEPS)
 	$(MMUX_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
 
 tests/test-version.exe: tests/test-version.$(OBJEXT)
+	$(MMUX_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
+
+## --------------------------------------------------------------------
+
+tests/test-alpha.$(OBJEXT): tests/test-alpha.scm $(MMUX_CHECK_DEPS)
+	$(MMUX_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
+
+tests/test-alpha.exe: tests/test-alpha.$(OBJEXT)
 	$(MMUX_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
 
 ### end of file
