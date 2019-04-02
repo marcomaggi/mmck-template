@@ -30,27 +30,26 @@
 	 (emit-import-library mmux.template.version))
 
 (module (mmux.template.version)
-    (mmux-template-version-string
-     mmux-template-version-interface-current
-     mmux-template-version-interface-revision
-     mmux-template-version-interface-age)
+    (mmux-template-package-major-version
+     mmux-template-package-minor-version
+     mmux-template-package-patch-level
+     mmux-template-package-prerelease-tag
+     mmux-template-package-build-metadata
+     mmux-template-package-version
+     mmux-template-package-semantic-version)
   (import (scheme)
 	  (prefix mmux.template.config config::))
 
 
 ;;;; version functions
 
-(define (mmux-template-version-string)
-  config::mmux_chicken_template_VERSION_INTERFACE_STRING)
-
-(define (mmux-template-version-interface-current)
-  config::mmux_chicken_template_VERSION_INTERFACE_CURRENT)
-
-(define (mmux-template-version-interface-revision)
-  config::mmux_chicken_template_VERSION_INTERFACE_REVISION)
-
-(define (mmux-template-version-interface-age)
-  config::mmux_chicken_template_VERSION_INTERFACE_AGE)
+(define (mmux-template-package-major-version)		config::MMUX_PKG_MAJOR_VERSION)
+(define (mmux-template-package-minor-version)		config::MMUX_PKG_MINOR_VERSION)
+(define (mmux-template-package-patch-level)		config::MMUX_PKG_PATCH_LEVEL)
+(define (mmux-template-package-prerelease-tag)		config::MMUX_PKG_PRERELEASE_TAG)
+(define (mmux-template-package-build-metadata)		config::MMUX_PKG_BUILD_METADATA)
+(define (mmux-template-package-version)			config::MMUX_PKG_VERSION)
+(define (mmux-template-package-semantic-version)	config::MMUX_PKG_SEMANTIC_VERSION)
 
 
 ;;;; done

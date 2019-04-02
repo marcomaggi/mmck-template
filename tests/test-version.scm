@@ -37,10 +37,13 @@
 
 ;;;; stuff
 
-(pretty-print (list 'version-string		(mmux-template-version-string)))
-(pretty-print (list 'version-interface-current	(mmux-template-version-interface-current)))
-(pretty-print (list 'version-interface-revision	(mmux-template-version-interface-revision)))
-(pretty-print (list 'version-interface-age	(mmux-template-version-interface-age)))
+(pretty-print (list 'mmux-template-package-major-version (mmux-template-package-major-version)))
+(pretty-print (list 'mmux-template-package-minor-version (mmux-template-package-minor-version)))
+(pretty-print (list 'mmux-template-package-patch-level (mmux-template-package-patch-level)))
+(pretty-print (list 'mmux-template-package-prerelease-tag (mmux-template-package-prerelease-tag)))
+(pretty-print (list 'mmux-template-package-build-metadata (mmux-template-package-build-metadata)))
+(pretty-print (list 'mmux-template-package-version (mmux-template-package-version)))
+(pretty-print (list 'mmux-template-package-semantic-version (mmux-template-package-semantic-version)))
 
 
 ;;;; done
