@@ -39,21 +39,26 @@ MMUX_TEMPLATE_IMPORT_SOURCES	= \
 	lib/mmux.template.version.import.scm	\
 	lib/mmux.template.import.scm
 
-# This does not include:
+# The module's import libraries needed to compile main module's object
+# file.  It does not include the main import library:
 #
 #   lib/mmux.template.import.$(MMUX_SOEXT)
 #
-MMUX_TEMPLATE_IMPORT_LIBS	= \
+MMUX_TEMPLATE_IMPORT_DEPS	= \
 	lib/mmux.template.alpha.import.$(MMUX_SOEXT)	\
 	lib/mmux.template.version.import.$(MMUX_SOEXT)
+
+# The import libraries  needed to compile new code  using the library.
+# We need to build and install all of them.
+#
+MMUX_TEMPLATE_IMPORT_LIBS	= \
+	lib/mmux.template.alpha.import.$(MMUX_SOEXT)	\
+	lib/mmux.template.version.import.$(MMUX_SOEXT)	\
+	lib/mmux.template.import.$(MMUX_SOEXT)
 
 # This is the extension library file pathname.
 #
 MMUX_TEMPLATE_LIBRARY		= lib/mmux.template.$(MMUX_SOEXT)
-
-# This is the import library file pathname.
-#
-MMUX_TEMPLATE_IMPORT_LIBRARY	= lib/mmux.template.import.$(MMUX_SOEXT)
 
 ## --------------------------------------------------------------------
 
@@ -61,10 +66,9 @@ EXTRA_DIST	+= $(MMUX_TEMPLATE_MODULES)
 
 CLEANFILES	+= \
 	$(MMUX_TEMPLATE_LIBRARY)	\
-	$(MMUX_TEMPLATE_IMPORT_LIBRARY)	\
 	$(MMUX_TEMPLATE_OBJECTS)	\
-	$(MMUX_TEMPLATE_IMPORT_SOURCES)	\
-	$(MMUX_TEMPLATE_IMPORT_LIBS)
+	$(MMUX_TEMPLATE_IMPORT_LIBS)	\
+	$(MMUX_TEMPLATE_IMPORT_SOURCES)
 
 # These variables are parsed by GNU Automake to build the main library
 # targets and install them under the directory $(MMUX_CHICKEN_LIBDIR).
@@ -78,7 +82,7 @@ CLEANFILES	+= \
 # permissions 0644.
 #
 templatedir		= $(MMUX_CHICKEN_LIBDIR)
-template_SCRIPTS	= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_TEMPLATE_IMPORT_LIBRARY)
+template_SCRIPTS	= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_TEMPLATE_IMPORT_LIBS)
 
 ## --------------------------------------------------------------------
 
@@ -107,13 +111,13 @@ lib/mmux.template.alpha.import.$(MMUX_SOEXT): lib/mmux.template.alpha.import.scm
 # This is the main compilation unit and it defines the main module; it
 # depends upon all the import libraries of the other modules.
 #
-lib/mmux.template.$(OBJEXT): lib/mmux.template.scm $(MMUX_TEMPLATE_IMPORT_LIBS) $(MMUX_OBJECTS_DEPS)
+lib/mmux.template.$(OBJEXT): lib/mmux.template.scm $(MMUX_TEMPLATE_IMPORT_DEPS) $(MMUX_OBJECTS_DEPS)
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
 	@$(MV) mmux.template.import.scm lib/mmux.template.import.scm
 
 lib/mmux.template.import.scm: lib/mmux.template.$(OBJEXT)
 
-$(MMUX_TEMPLATE_IMPORT_LIBRARY): lib/mmux.template.import.scm
+lib/mmux.template.import.$(MMUX_SOEXT): lib/mmux.template.import.scm
 	$(MMUX_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
 
 ## --------------------------------------------------------------------
