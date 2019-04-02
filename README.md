@@ -8,7 +8,8 @@
 This is  a template project, to  be used as starting  point for packages
 that build and install CHICKEN language libraries.
 
-The library targets POSIX systems.
+The  library targets  POSIX systems.   To  run the  tests: this  package
+depends upon the package MMUX CHICKEN Checks.
 
 The package uses the GNU Autotools and it is tested, using Travis CI, on
 both Ubuntu GNU+Linux  systems and OS X systems.  The  package relies on
@@ -169,6 +170,10 @@ the GNU Project software can be found here:
 we can download CHICKEN from:
 
 [http://www.call-cc.org/](http://www.call-cc.org/)
+
+the package MMUX CHICKEN Checks is available from:
+
+[https://github.com/marcomaggi/mmux-chicken-checks/](https://github.com/marcomaggi/mmux-chicken-checks/)
 
 ## Badges and static analysis
 
