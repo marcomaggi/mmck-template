@@ -7,7 +7,6 @@ AC_INIT([MMUX CHICKEN Template],[MMUX_PACKAGE_VERSION],
   [marco.maggi-ipsu@poste.it],
   [mmux-chicken-template],[http://github.com/marcomaggi/mmux-chicken-template])
 MMUX_INIT
-MMUX_CHICKEN_LIBRARY_VERSIONS([mmux_chicken_template],1,0,0)
 AC_REVISION([0.1])
 AC_COPYRIGHT([Copyright (c) 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
@@ -57,7 +56,6 @@ AC_CACHE_SAVE
 PKG_PREREQ([0.29])
 PKG_INSTALLDIR
 MMUX_CHECK_PKG_CONFIG_MACROS
-dnl PKG_CHECK_MODULES([CCEXCEPTIONS],[ccexceptions >= 0.8.0])
 
 AC_CACHE_SAVE
 
