@@ -27,7 +27,7 @@ MMUX_TEMPLATE_MODULES		= \
 
 # All the object files that must be linked in the extension library.
 #
-MMUX_TEMPLATE_OBJECTS		= \
+MMUX_TEMPLATE_RUNTIME_OBJECTS	= \
 	lib/mmux.template.alpha.$(OBJEXT)	\
 	lib/mmux.template.version.$(OBJEXT)	\
 	lib/mmux.template.$(OBJEXT)
@@ -48,41 +48,28 @@ MMUX_TEMPLATE_IMPORT_DEPS	= \
 	lib/mmux.template.alpha.import.$(MMUX_SOEXT)	\
 	lib/mmux.template.version.import.$(MMUX_SOEXT)
 
-# The import libraries  needed to compile new code  using the library.
-# We need to build and install all of them.
+# The import  libraries needed  to compile new  code using  the shared
+# library  "(mmux template)".   We need  to build  and install  all of
+# them.
 #
-MMUX_TEMPLATE_IMPORT_LIBS	= \
+MMUX_TEMPLATE_IMPORT_SHARED_LIBS	= \
 	lib/mmux.template.alpha.import.$(MMUX_SOEXT)	\
 	lib/mmux.template.version.import.$(MMUX_SOEXT)	\
 	lib/mmux.template.import.$(MMUX_SOEXT)
 
-# This is the extension library file pathname.
+# This is the "(mmux template)" shared library file pathname.
 #
-MMUX_TEMPLATE_LIBRARY		= lib/mmux.template.$(MMUX_SOEXT)
+MMUX_TEMPLATE_RUNTIME_SHARED_LIBS	= lib/mmux.template.$(MMUX_SOEXT)
 
 ## --------------------------------------------------------------------
 
 EXTRA_DIST	+= $(MMUX_TEMPLATE_MODULES)
 
 CLEANFILES	+= \
-	$(MMUX_TEMPLATE_LIBRARY)	\
-	$(MMUX_TEMPLATE_OBJECTS)	\
-	$(MMUX_TEMPLATE_IMPORT_LIBS)	\
+	$(MMUX_TEMPLATE_RUNTIME_SHARED_LIBS)	\
+	$(MMUX_TEMPLATE_RUNTIME_OBJECTS)	\
+	$(MMUX_TEMPLATE_IMPORT_SHARED_LIBS)	\
 	$(MMUX_TEMPLATE_IMPORT_SOURCES)
-
-# These variables are parsed by GNU Automake to build the main library
-# targets and install them under the directory $(MMUX_CHICKEN_LIBDIR).
-#
-# We are shamelessly cheating by  installing them using GNU Automake's
-# primary  suffix  "_SCRIPTS"; these  are  not  scripts!  Scripts  are
-# installed with the permissions 0755, which, for some reason, is what
-# we want  for shared libraries.
-#
-# We  could use  the  primary suffix  "_DATA", but  we  would get  the
-# permissions 0644.
-#
-templatedir		= $(MMUX_CHICKEN_LIBDIR)
-template_SCRIPTS	= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_TEMPLATE_IMPORT_LIBS)
 
 ## --------------------------------------------------------------------
 
@@ -122,8 +109,35 @@ lib/mmux.template.import.$(MMUX_SOEXT): lib/mmux.template.import.scm
 
 ## --------------------------------------------------------------------
 
-$(MMUX_TEMPLATE_LIBRARY): $(MMUX_TEMPLATE_OBJECTS)
+lib/mmux.template.$(MMUX_SOEXT): $(MMUX_TEMPLATE_RUNTIME_OBJECTS)
 	$(MMUX_LIB_ENV) $(CSC_LINK_LIBRARY) $(@) $(^)
+
+
+#### shared libraries installation
+
+# All the import shared libraries that we want to installe.
+#
+MMUX_ALL_IMPORT_SHARED_LIBS	= \
+	$(MMUX_TEMPLATE_IMPORT_SHARED_LIBS)
+
+# All the runtime shared libraries that we want to install.
+#
+MMUX_ALL_RUNTIME_SHARED_LIBS	= \
+	$(MMUX_TEMPLATE_RUNTIME_SHARED_LIBS)
+
+# These variables are parsed by GNU Automake to build the main library
+# targets and install them under the directory $(MMUX_CHICKEN_LIBDIR).
+#
+# We are shamelessly cheating by  installing them using GNU Automake's
+# primary  suffix  "_SCRIPTS"; these  are  not  scripts!  Scripts  are
+# installed with the permissions 0755, which, for some reason, is what
+# we want  for shared libraries.
+#
+# We  could use  the  primary suffix  "_DATA", but  we  would get  the
+# permissions 0644.
+#
+sharedlibdir		= $(MMUX_CHICKEN_LIBDIR)
+sharedlib_SCRIPTS	= $(MMUX_ALL_RUNTIME_SHARED_LIBS) $(MMUX_ALL_IMPORT_SHARED_LIBS)
 
 
 #### interface to "make check"
@@ -150,7 +164,7 @@ if MMUX_TESTING_ENABLED
 TESTS		= $(MMUX_CHECK_PROGS)
 endif
 
-MMUX_CHECK_DEPS	+= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_TEMPLATE_IMPORT_LIBS)
+MMUX_CHECK_DEPS	+= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_ALL_IMPORT_LIBS)
 
 ## --------------------------------------------------------------------
 
