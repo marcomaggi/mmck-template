@@ -17,6 +17,12 @@ LOCAL_ARCHIVE=/tmp/${ARCHIVE}
 TOP_SRCDIR=/tmp/${STEM}
 prefix=/usr/local
 
+if test -d /lib64
+then libdir=${prefix}/lib64
+else libdir=${prefix}/lib
+fi
+export CHICKEN_REPOSITORY_PATH=${libdir}/chicken/9
+
 function main () {
     script_verbose 'wget "%s" --no-check-certificate -O "%s"' "$SOURCE_URI" "$LOCAL_ARCHIVE"
     if ! wget --no-check-certificate "$SOURCE_URI" -O "$LOCAL_ARCHIVE"
