@@ -286,9 +286,15 @@ and as backup at:
 
 @center @value{BitbucketUrl}
 
+@noindent
 CHICKEN can be downloaded from:
 
 @center @url{http://www.call-cc.org/}
+
+@noindent
+the package MMUX CHICKEN Checks is available from:
+
+@center @url{https://github.com/marcomaggi/mmux-chicken-checks/}
 
 @c page
 @node concept index
