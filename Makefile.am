@@ -164,7 +164,7 @@ if MMUX_TESTING_ENABLED
 TESTS		= $(MMUX_CHECK_PROGS)
 endif
 
-MMUX_CHECK_DEPS	+= $(MMUX_TEMPLATE_LIBRARY) $(MMUX_ALL_IMPORT_LIBS)
+MMUX_CHECK_DEPS	+= $(MMUX_ALL_RUNTIME_SHARED_LIBS) $(MMUX_ALL_IMPORT_LIBS)
 
 ## --------------------------------------------------------------------
 
