@@ -4,7 +4,7 @@
 
 ACLOCAL_AMFLAGS		= -I meta/autotools
 AUTOMAKE_OPTIONS	= foreign
-EXTRA_DIST		= INSTALL meta/slackware/slack-desc.in
+EXTRA_DIST		= INSTALL
 CLEANFILES		=
 MAINTAINERCLEANFILES	= lib/config.scm
 dist_doc_DATA		= README COPYING
