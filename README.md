@@ -6,7 +6,9 @@
 ## Introduction
 
 This is  a template project, to  be used as starting  point for packages
-that build and install CHICKEN language libraries.
+that  build  and  install  CHICKEN language  libraries.   CHICKEN  is  a
+Scheme-to-C compiler supporting the language  features as defined in the
+``Revised^5 Report on Scheme''.
 
 The  library targets  POSIX systems.   To  run the  tests: this  package
 depends upon the package MMUX CHICKEN Checks.
