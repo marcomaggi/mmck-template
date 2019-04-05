@@ -1,7 +1,7 @@
 \input texinfo.tex
 @c %**start of header
 @setfilename mmux-chicken-template.info
-@settitle MMUX CHICKEN Template
+@settitle MMUX @sc{chicken} Template
 @c %**end of header
 
 @include version.texi
@@ -12,11 +12,11 @@
 @c Values.
 @c ------------------------------------------------------------
 
-@set TITLE                      Template for CHICKEN
+@set TITLE                      Template for @sc{chicken}
 
 @c To be used as @value{PACKAGE} whenever we need to include the full
 @c name of this package.
-@set PACKAGE                    MMUX CHICKEN Template
+@set PACKAGE                    MMUX @sc{chicken} Template
 
 @c To be used as @value{PACKAGE} whenever we need to include the
 @c nickname of the project: the name that is used to compose the
@@ -62,16 +62,21 @@
 @acronym{TEMPLATE}
 @end macro
 
+@macro chicken{}
+@sc{chicken}
+@end macro
+
 @c page
 @c ------------------------------------------------------------
 @c Copyright notice.
 @c ------------------------------------------------------------
 
 @copying
-This document describes version @value{VERSION} of @value{PACKAGE}, a CHICKEN language library
-implementing a template library.
+This document describes version @value{VERSION} of @value{PACKAGE}, a @chicken{} language library
+implementing a template library.  @chicken{} is a Scheme--to--C compiler supporting the language
+features as defined in the ``Revised^5 Report on Scheme''.
 
-The library supports @posix{} platforms.  This package has been tested with CHICKEN version
+The library supports @posix{} platforms.  This package has been tested with @chicken{} version
 @value{CHICKEN_VERSION}.
 
 This package is distributed under the terms of the @gnu{} Lesser General Public License (@lgpl{}).
@@ -121,7 +126,7 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 @ifinfo
 @dircategory Development
 @direntry
-* mmux-chicken-template: (mmux-chicken-template).   A template library for CHICKEN.
+* mmux-chicken-template: (mmux-chicken-template).   A template library for @chicken{}.
 @end direntry
 @end ifinfo
 
@@ -168,8 +173,8 @@ Indexes
 @cindex Library @library{mmux template}
 
 
-This document describes version @value{VERSION} of @value{PACKAGE}, a CHICKEN language library
-implementing a template library.  CHICKEN is a Scheme-to-C compiler supporting the language features
+This document describes version @value{VERSION} of @value{PACKAGE}, a @chicken{} language library
+implementing a template library.  @chicken{} is a Scheme-to-C compiler supporting the language features
 as defined in the ``Revised^5 Report on Scheme''.
 
 This package supports @posix{} platforms.
@@ -287,12 +292,12 @@ and as backup at:
 @center @value{BitbucketUrl}
 
 @noindent
-CHICKEN can be downloaded from:
+@chicken{} can be downloaded from:
 
 @center @url{http://www.call-cc.org/}
 
 @noindent
-the package MMUX CHICKEN Checks is available from:
+the package MMUX @chicken{} Checks is available from:
 
 @center @url{https://github.com/marcomaggi/mmux-chicken-checks/}
 
