@@ -31,8 +31,8 @@
 (module (test-version)
     ()
   (import (scheme)
-    (mmux template)
-    (chicken pretty-print))
+	  (mmux template)
+	  (chicken pretty-print))
 
 
 ;;;; stuff
