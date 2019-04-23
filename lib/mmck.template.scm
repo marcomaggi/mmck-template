@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8-unix  -*-
 ;;;
-;;;Part of: MMUX CHICKEN Template
+;;;Part of: MMCK Template
 ;;;Contents: main compilation unit
 ;;;Date: Mar 29, 2019
 ;;;
@@ -30,16 +30,16 @@
 
 ;;;; units and module header
 
-(declare (unit mmux.template)
-	 (uses mmux.template.alpha)
-	 (uses mmux.template.version)
-	 (emit-import-library mmux.template))
+(declare (unit mmck.template)
+	 (uses mmck.template.alpha)
+	 (uses mmck.template.version)
+	 (emit-import-library mmck.template))
 
-(module (mmux.template)
+(module (mmck.template)
     ()
   (import (only (chicken module) reexport))
-  (reexport (mmux.template.alpha))
-  (reexport (mmux.template.version))
+  (reexport (mmck.template.alpha))
+  (reexport (mmck.template.version))
   #| end of module |# )
 
 ;;; end of file

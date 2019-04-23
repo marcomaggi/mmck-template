@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8-unix  -*-
 ;;;
-;;;Part of: MMUX CHICKEN Template
+;;;Part of: MMCK Template
 ;;;Contents: module alpha
 ;;;Date: Mar 29, 2019
 ;;;
@@ -26,10 +26,10 @@
 
 ;;;; units and module header
 
-(declare (unit mmux.template.alpha)
-	 (emit-import-library mmux.template.alpha))
+(declare (unit mmck.template.alpha)
+	 (emit-import-library mmck.template.alpha))
 
-(module (mmux.template.alpha)
+(module (mmck.template.alpha)
     (the-func)
   (import (scheme))
 

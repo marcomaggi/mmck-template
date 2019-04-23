@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8-unix  -*-
 ;;;
-;;;Part of: MMUX CHICKEN Template
+;;;Part of: MMCK Template
 ;;;Contents: version functions
 ;;;Date: Fri Mar 29, 2019
 ;;;
@@ -26,30 +26,30 @@
 
 ;;;; units and module header
 
-(declare (unit mmux.template.version)
-	 (emit-import-library mmux.template.version))
+(declare (unit mmck.template.version)
+	 (emit-import-library mmck.template.version))
 
-(module (mmux.template.version)
-    (mmux-template-package-major-version
-     mmux-template-package-minor-version
-     mmux-template-package-patch-level
-     mmux-template-package-prerelease-tag
-     mmux-template-package-build-metadata
-     mmux-template-package-version
-     mmux-template-package-semantic-version)
+(module (mmck.template.version)
+    (mmck-template-package-major-version
+     mmck-template-package-minor-version
+     mmck-template-package-patch-level
+     mmck-template-package-prerelease-tag
+     mmck-template-package-build-metadata
+     mmck-template-package-version
+     mmck-template-package-semantic-version)
   (import (scheme)
-	  (prefix mmux.template.config config::))
+	  (prefix mmck.template.config config::))
 
 
 ;;;; version functions
 
-(define (mmux-template-package-major-version)		config::MMUX_PKG_MAJOR_VERSION)
-(define (mmux-template-package-minor-version)		config::MMUX_PKG_MINOR_VERSION)
-(define (mmux-template-package-patch-level)		config::MMUX_PKG_PATCH_LEVEL)
-(define (mmux-template-package-prerelease-tag)		config::MMUX_PKG_PRERELEASE_TAG)
-(define (mmux-template-package-build-metadata)		config::MMUX_PKG_BUILD_METADATA)
-(define (mmux-template-package-version)			config::MMUX_PKG_VERSION)
-(define (mmux-template-package-semantic-version)	config::MMUX_PKG_SEMANTIC_VERSION)
+(define (mmck-template-package-major-version)		config::MMUX_PKG_MAJOR_VERSION)
+(define (mmck-template-package-minor-version)		config::MMUX_PKG_MINOR_VERSION)
+(define (mmck-template-package-patch-level)		config::MMUX_PKG_PATCH_LEVEL)
+(define (mmck-template-package-prerelease-tag)		config::MMUX_PKG_PRERELEASE_TAG)
+(define (mmck-template-package-build-metadata)		config::MMUX_PKG_BUILD_METADATA)
+(define (mmck-template-package-version)			config::MMUX_PKG_VERSION)
+(define (mmck-template-package-semantic-version)	config::MMUX_PKG_SEMANTIC_VERSION)
 
 
 ;;;; done

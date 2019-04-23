@@ -1,7 +1,7 @@
 -*- coding: utf-8-unix -*-
 
-		  News file for MMUX CHICKEN Template
-		  ===================================
+		      News file for MMCK Template
+		      ===========================
 
 Revision 0.1.0-devel.0
 ----------------------
@@ -14,5 +14,5 @@ Revision 0.1.0-devel.0
 # mode: text
 # fill-column: 72
 # paragraph-start: "*"
-# ispell-local-dictionary: "en_GB"
+# ispell-local-dictionary: "en_GB-ise-w_accents"
 # End:

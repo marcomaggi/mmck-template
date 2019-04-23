@@ -3,9 +3,9 @@
 
 AC_PREREQ([2.69])
 MMUX_PKG_VERSIONS([0],[1],[0],[devel.0])
-AC_INIT([MMUX CHICKEN Template],[MMUX_PACKAGE_VERSION],
+AC_INIT([MMCK Template],[MMUX_PACKAGE_VERSION],
   [marco.maggi-ipsu@poste.it],
-  [mmux-chicken-template],[http://github.com/marcomaggi/mmux-chicken-template])
+  [mmck-template],[http://github.com/marcomaggi/mmck-template])
 MMUX_INIT
 AC_REVISION([0.1])
 AC_COPYRIGHT([Copyright (c) 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
@@ -44,9 +44,9 @@ MMUX_CHECK_TARGET_OS
 AX_IS_RELEASE([git-directory])
 
 MMUX_CHICKEN_SCHEME
-MMUX_CHICKEN_CHECK_LIBRARY([MMUX_CHECKS],[mmux.checks])
+MMUX_CHICKEN_CHECK_LIBRARY([MMCK_CHECKS],[mmck.checks])
 
-AM_CONDITIONAL([MMUX_TESTING_ENABLED],[test "x$chicken_cv_schemelib_MMUX_CHECKS" = xyes])
+AM_CONDITIONAL([MMCK_TESTING_ENABLED],[test "x$chicken_cv_schemelib_MMCK_CHECKS" = xyes])
 
 AC_CACHE_SAVE
 
@@ -63,7 +63,7 @@ AC_CACHE_SAVE
 #### finish
 
 AC_CONFIG_FILES([Makefile]
-   [meta/scripts/mmux-chicken-template.pc]
+   [meta/scripts/mmck-template.pc]
    [meta/slackware/slack-desc]
    [lib/config.scm])
 MMUX_OUTPUT

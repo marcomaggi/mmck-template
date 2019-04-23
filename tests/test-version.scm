@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8-unix  -*-
 ;;;
-;;;Part of: MMUX CHICKEN Template
+;;;Part of: MMCK Template
 ;;;Contents: test program for version functions
 ;;;Date: Mar 29, 2019
 ;;;
@@ -26,24 +26,24 @@
 
 ;;;; units and module header
 
-(require-library (mmux template))
+(require-library (mmck template))
 
 (module (test-version)
     ()
   (import (scheme)
-	  (mmux template)
+	  (mmck template)
 	  (chicken pretty-print))
 
 
 ;;;; stuff
 
-(pretty-print (list 'mmux-template-package-major-version (mmux-template-package-major-version)))
-(pretty-print (list 'mmux-template-package-minor-version (mmux-template-package-minor-version)))
-(pretty-print (list 'mmux-template-package-patch-level (mmux-template-package-patch-level)))
-(pretty-print (list 'mmux-template-package-prerelease-tag (mmux-template-package-prerelease-tag)))
-(pretty-print (list 'mmux-template-package-build-metadata (mmux-template-package-build-metadata)))
-(pretty-print (list 'mmux-template-package-version (mmux-template-package-version)))
-(pretty-print (list 'mmux-template-package-semantic-version (mmux-template-package-semantic-version)))
+(pretty-print (list 'mmck-template-package-major-version	(mmck-template-package-major-version)))
+(pretty-print (list 'mmck-template-package-minor-version	(mmck-template-package-minor-version)))
+(pretty-print (list 'mmck-template-package-patch-level		(mmck-template-package-patch-level)))
+(pretty-print (list 'mmck-template-package-prerelease-tag	(mmck-template-package-prerelease-tag)))
+(pretty-print (list 'mmck-template-package-build-metadata	(mmck-template-package-build-metadata)))
+(pretty-print (list 'mmck-template-package-version		(mmck-template-package-version)))
+(pretty-print (list 'mmck-template-package-semantic-version	(mmck-template-package-semantic-version)))
 
 
 ;;;; done

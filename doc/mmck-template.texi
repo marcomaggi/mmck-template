@@ -1,7 +1,7 @@
 \input texinfo.tex
 @c %**start of header
-@setfilename mmux-chicken-template.info
-@settitle MMUX @sc{chicken} Template
+@setfilename mmck-template.info
+@settitle @sc{mmck} Template
 @c %**end of header
 
 @include version.texi
@@ -16,12 +16,12 @@
 
 @c To be used as @value{PACKAGE} whenever we need to include the full
 @c name of this package.
-@set PACKAGE                    MMUX @sc{chicken} Template
+@set PACKAGE                    @sc{mmck} Template
 
 @c To be used as @value{PACKAGE} whenever we need to include the
 @c nickname of the project: the name that is used to compose the
 @c distribution tarball or the web address.
-@set PACKAGE_NICKNAME           mmux-chicken-template
+@set PACKAGE_NICKNAME           mmck-template
 
 @c To be used as @value{AUTHOR} whenever we need to include the list of
 @c authors of this document.
@@ -41,8 +41,8 @@
 
 @set PackageStem                template
 
-@set PackageAutoconfPrefix      MMUX_CHICKEN_TEMPLATE
-@set PackagePkgconfigModule     mmux-chicken-template
+@set PackageAutoconfPrefix      MMCK_TEMPLATE
+@set PackagePkgconfigModule     mmck-template
 
 @set GithubUrl                  @url{https://github.com/marcomaggi/@value{PACKAGE_NICKNAME}}
 @set BitbucketUrl               @url{https://bitbucket.org/marcomaggi/@value{PACKAGE_NICKNAME}}
@@ -54,16 +54,22 @@
 @c Local macros.
 @c ------------------------------------------------------------
 
+@macro mmck{}
+@sc{mmck}
+@end macro
+
+@macro chicken{}
+@sc{chicken}
+@end macro
+
+@c ------------------------------------------------------------------------
+
 @macro templateref{NODE, TITLE}
 @xref{\NODE\,\TITLE\,\TITLE\,template}
 @end macro
 
 @macro template{}
 @acronym{TEMPLATE}
-@end macro
-
-@macro chicken{}
-@sc{chicken}
 @end macro
 
 @c page
@@ -126,7 +132,7 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 @ifinfo
 @dircategory Development
 @direntry
-* mmux-chicken-template: (mmux-chicken-template).   A template library for @chicken{}.
+* mmck-template: (mmck-template).   A template library for @chicken{}.
 @end direntry
 @end ifinfo
 
@@ -169,29 +175,29 @@ Indexes
 @chapter Overview of the package
 
 
-@cindex @library{mmux template}, library
-@cindex Library @library{mmux template}
+@cindex @library{mmck template}, library
+@cindex Library @library{mmck template}
 
 
 This document describes version @value{VERSION} of @value{PACKAGE}, a @chicken{} language library
-implementing a template library.  @chicken{} is a Scheme-to-C compiler supporting the language features
-as defined in the ``Revised^5 Report on Scheme''.
+implementing a template library.  @chicken{} is a Scheme-to-C compiler supporting the language
+features as defined in the ``Revised^5 Report on Scheme''.
 
 This package supports @posix{} platforms.
 
-The package installs the library @library{mmux template} along with its import library.  To require
+The package installs the library @library{mmck template} along with its import library.  To require
 the library and import its syntactic bindings in a module we can do:
 
 @example
 (declare (unit my-module)
          (emit-import-library my-module))
 
-(require-library (mmux template))
+(require-library (mmck template))
 
 (module (my-module)
     ()
   (import (scheme)
-    (mmux template)
+    (mmck template)
     (chicken pretty-print))
 
   ...
@@ -213,32 +219,32 @@ as outlined at:
 the following functions are available to inspect the version specification at runtime.
 
 
-@defun mmux-@value{PackageStem}-package-major-version
+@defun mmck-@value{PackageStem}-package-major-version
 Return a fixnum representing the package's major version number.  As example, if the full semantic
 version is @samp{1.2.3-devel.0+x86-64}: the major version number is the fixnum @samp{1}.
 @end defun
 
 
-@defun mmux-@value{PackageStem}-package-minor-version
+@defun mmck-@value{PackageStem}-package-minor-version
 Return a fixnum representing the package's minor version number.  As example, if the full semantic
 version is @samp{1.2.3-devel.0+x86-64}: the minor version number is the fixnum @samp{2}.
 @end defun
 
 
-@defun mmux-@value{PackageStem}-package-patch-level
+@defun mmck-@value{PackageStem}-package-patch-level
 Return a fixnum representing the package's patch level number.  As example, if the full semantic
 version is @samp{1.2.3-devel.0+x86-64}: the patch level number is the fixnum @samp{3}.
 @end defun
 
 
-@defun mmux-@value{PackageStem}-package-prerelease-tag
+@defun mmck-@value{PackageStem}-package-prerelease-tag
 Return a string representing the package's prerelease tag.  As example, if the full semantic version
 is @samp{1.2.3-devel.0+x86-64}: the prerelease tag is the string @samp{"devel.0"}.  This string may
 be empty.
 @end defun
 
 
-@defun mmux-@value{PackageStem}-package-build-metadata
+@defun mmck-@value{PackageStem}-package-build-metadata
 Return a string representing the package's build metadata.  As example, if the full semantic version
 is @samp{1.2.3-devel.0+x86-64}: the build metadata is the string @samp{"x86-64"}.  This string may
 be empty.  We need to remember that this specification segment must contain only @ascii{}
@@ -246,14 +252,14 @@ alphanumerics and hyphen @samp{[0-9A-Za-z-]}; underscores are @strong{not} allow
 @end defun
 
 
-@defun mmux-@value{PackageStem}-package-version
+@defun mmck-@value{PackageStem}-package-version
 Return a string representing the package's version.  As example, if the full semantic version is
 @samp{1.2.3-devel.0+x86-64}: the package version is the string @samp{"1.2.3-devel.0"}, without the
 build metadata.
 @end defun
 
 
-@defun mmux-@value{PackageStem}-package-semantic-version
+@defun mmck-@value{PackageStem}-package-semantic-version
 Return a string representing the package's semantic version.  As example, if the full semantic
 version is @samp{1.2.3-devel.0+x86-64}: the package version is the string
 @samp{"v1.2.3-devel.0+x86-64"}, notice the leading character @samp{v}.
@@ -297,9 +303,9 @@ and as backup at:
 @center @url{http://www.call-cc.org/}
 
 @noindent
-the package MMUX @chicken{} Checks is available from:
+the package @mmck{} Checks is available from:
 
-@center @url{https://github.com/marcomaggi/mmux-chicken-checks/}
+@center @url{https://github.com/marcomaggi/mmck-checks/}
 
 @c page
 @node concept index

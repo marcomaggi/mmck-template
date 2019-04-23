@@ -3,12 +3,12 @@
 # Installation  script to  run from  the  Travis CI  config file  before
 # attempting a build.
 #
-# Install  MMUX CHICKEN  Checks  under the  directory "/usr/local".   We
-# assume the script is run from the top directory of the build tree.
+# Install MMCK Checks  under the directory "/usr/local".   We assume the
+# script is run from the top directory of the build tree.
 
 PROGNAME=${0##*/}
-PACKAGE_NAME=mmux-chicken-checks
-REQUIRED_PACKAGE_VERSION=0.1.0-devel.1
+PACKAGE_NAME=mmck-checks
+REQUIRED_PACKAGE_VERSION=0.2.0-devel.0
 STEM=${PACKAGE_NAME}-${REQUIRED_PACKAGE_VERSION}
 VERSION_EXECUTABLE=$PACKAGE_NAME
 ARCHIVE=${STEM}.tar.gz
