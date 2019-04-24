@@ -1,4 +1,4 @@
-# MMCK CHICKEN Template
+# MMCK Template
 
 [![Build Status](https://travis-ci.org/marcomaggi/mmck-template.svg?branch=master)](https://travis-ci.org/marcomaggi/mmck-template)
 
