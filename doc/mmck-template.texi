@@ -197,8 +197,7 @@ the library and import its syntactic bindings in a module we can do:
 (module (my-module)
     ()
   (import (scheme)
-    (mmck template)
-    (chicken pretty-print))
+    (mmck template))
 
   ...
 
