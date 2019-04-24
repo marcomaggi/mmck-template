@@ -202,4 +202,6 @@ additional scripts are under the directory `meta/travis-ci`.
 # Local Variables:
 # mode: text
 # fill-column: 72
+# paragraph-start: "*"
+# ispell-local-dictionary: "en_GB-ise-w_accents"
 # End:
