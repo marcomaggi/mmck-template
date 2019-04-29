@@ -333,4 +333,6 @@ the package @mmck{} Checks is available from:
 @bye
 
 @c end of file
-
+@c Local Variables:
+@c ispell-local-dictionary: "en_GB-ise-w_accents"
+@c end:
