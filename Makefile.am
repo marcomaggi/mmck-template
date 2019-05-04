@@ -61,6 +61,19 @@ MMCK_TEMPLATE_IMPORT_SHARED_LIBS	= \
 #
 MMCK_TEMPLATE_RUNTIME_SHARED_LIBS	= lib/mmck.template.$(MMCK_SOEXT)
 
+MMCK_TEMPLATE_TEMP_FILES	= \
+	lib/mmck.template.version.temp			\
+	lib/mmck.template.alpha.temp			\
+	lib/mmck.template.temp				\
+	\
+	lib/mmck.template.version.lock			\
+	lib/mmck.template.alpha.lock			\
+	lib/mmck.template.lock				\
+	\
+	lib/mmck.template.version.stamp			\
+	lib/mmck.template.alpha.stamp			\
+	lib/mmck.template.stamp
+
 ## --------------------------------------------------------------------
 
 EXTRA_DIST	+= $(MMCK_TEMPLATE_MODULES)
@@ -69,26 +82,79 @@ CLEANFILES	+= \
 	$(MMCK_TEMPLATE_RUNTIME_SHARED_LIBS)	\
 	$(MMCK_TEMPLATE_RUNTIME_OBJECTS)	\
 	$(MMCK_TEMPLATE_IMPORT_SHARED_LIBS)	\
-	$(MMCK_TEMPLATE_IMPORT_SOURCES)
+	$(MMCK_TEMPLATE_IMPORT_SOURCES)		\
+	$(MMCK_TEMPLATE_TEMP_FILES)
 
 ## --------------------------------------------------------------------
 
-lib/mmck.template.version.$(OBJEXT): lib/mmck.template.version.scm $(MMCK_OBJECTS_DEPS)
-	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<) -prologue lib/config.scm
+# A compiler  invokation to build  an object file, also  generates the
+# source  file for  the import  library; a  single rule  generates two
+# targets.  We implement  the rules as suggested  in the documentation
+# of GNU Automake, node "Multiple Outputs".
+#
+# It is ugly, I know.  But it  is supposed to support all the cases of
+# parallel build and dry runs.  (Marco Maggi; May  4, 2019)
+#
+lib/mmck.template.version.stamp: lib/mmck.template.version.scm $(MMCK_OBJECTS_DEPS)
+	@rm -f lib/mmck.template.version.temp
+	@touch lib/mmck.template.version.temp
+	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.version.$(OBJEXT) $(<) -prologue lib/config.scm
 	@$(MV) mmck.template.version.import.scm lib/mmck.template.version.import.scm
+	@mv -f lib/mmck.template.version.temp $@
 
-lib/mmck.template.version.import.scm: lib/mmck.template.version.$(OBJEXT)
+lib/mmck.template.version.import.scm lib/mmck.template.version.$(OBJEXT): lib/mmck.template.version.stamp
+	@dry=; for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=*|--*);; \
+	    *n*) dry=:;; \
+	  esac; \
+	done; \
+	if test -f $@; then :; else \
+	  $$dry trap 'rm -rf lib/mmck.template.version.lock lib/mmck.template.version.stamp' 1 2 13 15; \
+	  if $$dry mkdir lib/mmck.template.version.lock 2>/dev/null; then \
+	    $$dry rm -f lib/mmck.template.version.stamp; \
+	    $(MAKE) $(AM_MAKEFLAGS) lib/mmck.template.version.stamp; \
+	    $$dry rmdir lib/mmck.template.version.lock; \
+	  else \
+	    while test -d lib/mmck.template.version.lock && test -z "$$dry"; do \
+	      sleep 1; \
+	    done; \
+	    $$dry test -f lib/mmck.template.version.stamp; exit $$?; \
+	  fi; \
+	fi
 
 lib/mmck.template.version.import.$(MMCK_SOEXT): lib/mmck.template.version.import.scm
 	$(MMCK_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
 
 ## --------------------------------------------------------------------
 
-lib/mmck.template.alpha.$(OBJEXT): lib/mmck.template.alpha.scm $(MMCK_OBJECTS_DEPS)
-	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+lib/mmck.template.alpha.stamp: lib/mmck.template.alpha.scm $(MMCK_OBJECTS_DEPS)
+	@rm -f lib/mmck.template.alpha.temp
+	@touch lib/mmck.template.alpha.temp
+	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.alpha.$(OBJEXT) $(<)
 	@$(MV) mmck.template.alpha.import.scm lib/mmck.template.alpha.import.scm
+	@mv -f lib/mmck.template.alpha.temp $@
 
-lib/mmck.template.alpha.import.scm: lib/mmck.template.alpha.$(OBJEXT)
+lib/mmck.template.alpha.import.scm lib/mmck.template.alpha.$(OBJEXT): lib/mmck.template.alpha.stamp
+	@dry=; for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=*|--*);; \
+	    *n*) dry=:;; \
+	  esac; \
+	done; \
+	if test -f $@; then :; else \
+	  $$dry trap 'rm -rf lib/mmck.template.alpha.lock lib/mmck.template.alpha.stamp' 1 2 13 15; \
+	  if $$dry mkdir lib/mmck.template.alpha.lock 2>/dev/null; then \
+	    $$dry rm -f lib/mmck.template.alpha.stamp; \
+	    $(MAKE) $(AM_MAKEFLAGS) lib/mmck.template.alpha.stamp; \
+	    $$dry rmdir lib/mmck.template.alpha.lock; \
+	  else \
+	    while test -d lib/mmck.template.alpha.lock && test -z "$$dry"; do \
+	      sleep 1; \
+	    done; \
+	    $$dry test -f lib/mmck.template.alpha.stamp; exit $$?; \
+	  fi; \
+	fi
 
 lib/mmck.template.alpha.import.$(MMCK_SOEXT): lib/mmck.template.alpha.import.scm
 	$(MMCK_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
@@ -98,11 +164,33 @@ lib/mmck.template.alpha.import.$(MMCK_SOEXT): lib/mmck.template.alpha.import.scm
 # This is the main compilation unit and it defines the main module; it
 # depends upon all the import libraries of the other modules.
 #
-lib/mmck.template.$(OBJEXT): lib/mmck.template.scm $(MMCK_TEMPLATE_IMPORT_DEPS) $(MMCK_OBJECTS_DEPS)
-	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) $(@) $(<)
+lib/mmck.template.stamp: lib/mmck.template.scm $(MMCK_TEMPLATE_IMPORT_DEPS) $(MMCK_OBJECTS_DEPS)
+	@rm -f lib/mmck.template.temp
+	@touch lib/mmck.template.temp
+	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.$(OBJEXT) $(<)
 	@$(MV) mmck.template.import.scm lib/mmck.template.import.scm
+	@mv -f lib/mmck.template.temp $@
 
-lib/mmck.template.import.scm: lib/mmck.template.$(OBJEXT)
+lib/mmck.template.import.scm lib/mmck.template.$(OBJEXT): lib/mmck.template.stamp
+	@dry=; for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=*|--*);; \
+	    *n*) dry=:;; \
+	  esac; \
+	done; \
+	if test -f $@; then :; else \
+	  $$dry trap 'rm -rf lib/mmck.template.lock lib/mmck.template.stamp' 1 2 13 15; \
+	  if $$dry mkdir lib/mmck.template.lock 2>/dev/null; then \
+	    $$dry rm -f lib/mmck.template.stamp; \
+	    $(MAKE) $(AM_MAKEFLAGS) lib/mmck.template.stamp; \
+	    $$dry rmdir lib/mmck.template.lock; \
+	  else \
+	    while test -d lib/mmck.template.lock && test -z "$$dry"; do \
+	      sleep 1; \
+	    done; \
+	    $$dry test -f lib/mmck.template.stamp; exit $$?; \
+	  fi; \
+	fi
 
 lib/mmck.template.import.$(MMCK_SOEXT): lib/mmck.template.import.scm
 	$(MMCK_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
