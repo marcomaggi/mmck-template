@@ -2,7 +2,7 @@
 ;;;
 ;;;Part of: MMCK Template
 ;;;Contents: test program for version functions
-;;;Date: Mar 29, 2019
+;;;Date: Apr  2, 2019
 ;;;
 ;;;Abstract
 ;;;
@@ -32,21 +32,37 @@
     ()
   (import (scheme)
 	  (mmck template)
+	  (mmck checks)
 	  (chicken pretty-print))
 
-
-;;;; stuff
+(check-set-mode! 'report-failed)
+(check-display "*** testing version functions\n")
 
-(pretty-print (list 'mmck-template-package-major-version	(mmck-template-package-major-version)))
-(pretty-print (list 'mmck-template-package-minor-version	(mmck-template-package-minor-version)))
-(pretty-print (list 'mmck-template-package-patch-level		(mmck-template-package-patch-level)))
-(pretty-print (list 'mmck-template-package-prerelease-tag	(mmck-template-package-prerelease-tag)))
-(pretty-print (list 'mmck-template-package-build-metadata	(mmck-template-package-build-metadata)))
-(pretty-print (list 'mmck-template-package-version		(mmck-template-package-version)))
-(pretty-print (list 'mmck-template-package-semantic-version	(mmck-template-package-semantic-version)))
+
+(parameterise ((check-test-name		'versions))
+
+  (pretty-print (list 'mmck-template-package-major-version	(mmck-template-package-major-version)))
+  (pretty-print (list 'mmck-template-package-minor-version	(mmck-template-package-minor-version)))
+  (pretty-print (list 'mmck-template-package-patch-level	(mmck-template-package-patch-level)))
+  (pretty-print (list 'mmck-template-package-prerelease-tag	(mmck-template-package-prerelease-tag)))
+  (pretty-print (list 'mmck-template-package-build-metadata	(mmck-template-package-build-metadata)))
+  (pretty-print (list 'mmck-template-package-version		(mmck-template-package-version)))
+  (pretty-print (list 'mmck-template-package-semantic-version	(mmck-template-package-semantic-version)))
+
+  (check-for-true		(number? (mmck-template-package-major-version)))
+  (check-for-true		(number? (mmck-template-package-minor-version)))
+  (check-for-true		(number? (mmck-template-package-patch-level)))
+  (check-for-true		(string? (mmck-template-package-prerelease-tag)))
+  (check-for-true		(string? (mmck-template-package-build-metadata)))
+  (check-for-true		(string? (mmck-template-package-version)))
+  (check-for-true		(string? (mmck-template-package-semantic-version)))
+
+  (values))
 
 
 ;;;; done
+
+(check-report)
 
 #| end of module |# )
 
