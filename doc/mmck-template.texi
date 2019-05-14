@@ -315,17 +315,17 @@ the package @mmck{} Checks is available from:
 @printindex cp
 
 @node function index
-@appendix An entry for each function.
+@appendix An entry for each function
 
 @printindex fn
 
 @node variable index
-@appendix An entry for each variable.
+@appendix An entry for each variable
 
 @printindex vr
 
 @node type index
-@appendix An entry for each type.
+@appendix An entry for each type
 
 @printindex tp
 
