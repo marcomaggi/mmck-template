@@ -369,6 +369,10 @@
 @code{#:\NAME\}
 @end macro
 
+@macro akeyword{NAME}
+#:\NAME\
+@end macro
+
 @c page
 @c ------------------------------------------------------------
 @c Scheme related macros.
