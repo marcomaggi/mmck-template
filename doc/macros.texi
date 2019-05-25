@@ -373,6 +373,10 @@
 #:\NAME\
 @end macro
 
+@macro mop{}
+@acronym{mop}
+@end macro
+
 @c page
 @c ------------------------------------------------------------
 @c Scheme related macros.
