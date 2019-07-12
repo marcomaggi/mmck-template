@@ -22,7 +22,7 @@ tested CHICKEN 5.0.0.
 ## License
 
 Copyright (c) 2019 Marco Maggi<br/>
-`marco.maggi-ipsu@poste.it`<br/>
+`mrc.mgg@gmail.com`<br/>
 All rights reserved.
 
 This program is free software: you  can redistribute it and/or modify it

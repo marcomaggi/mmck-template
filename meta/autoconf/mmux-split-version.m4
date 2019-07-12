@@ -28,7 +28,7 @@
 #
 # LICENSE
 #
-#   Copyright (c) 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
+#   Copyright (c) 2019 Marco Maggi <mrc.mgg@gmail.com>
 #   Copyright (c) 2008 Tom Howard <tomhoward@users.sf.net>
 #
 #   Copying and distribution of this file, with or without modification,
