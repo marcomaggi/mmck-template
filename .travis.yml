@@ -158,7 +158,6 @@ before_script:
   # "glibtoolize".
   - echo autoconf --version ; autoconf --version;
   - echo automake --version ; automake --version;
-  - echo CHICKEN_REPOSITORY_PATH=$CHICKEN_REPOSITORY_PATH
   - sh ./autogen.sh;
 
 matrix:
@@ -176,6 +175,7 @@ matrix:
           packages:
           - gcc-8
       script: |
+        echo CHICKEN_REPOSITORY_PATH=$CHICKEN_REPOSITORY_PATH
         ./configure --enable-maintainer-mode;
         make all;
         make check;
@@ -187,7 +187,7 @@ matrix:
       osx_image: xcode10.1
       compiler: clang
       script: |
-        export CHICKEN_REPOSITORY_PATH=$(csi -R chicken.platform -p '(map (lambda (P) (display P)(display ":")) (repository-path))(newline)');
+        echo CHICKEN_REPOSITORY_PATH=$CHICKEN_REPOSITORY_PATH
         ./configure --enable-maintainer-mode;
         make all;
         make check;
