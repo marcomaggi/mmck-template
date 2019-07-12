@@ -174,7 +174,7 @@ matrix:
       script: |
         export CHICKEN_VERSION=$(csi -release);
         export libdir=$(if test -d /lib64 ; then echo /usr/local/lib64 ; else echo /usr/local/lib ; fi);
-        export CHICKEN_REPOSITORY_PATH=$libdir/chicken/$CHICKEN_VERSION$(csi -R chicken.platform -p '(map (lambda (P) (display ":")(display P)) (repository-path))(newline)');
+        export CHICKEN_REPOSITORY_PATH=$libdir/chicken/$CHICKEN_VERSION$(csi -R chicken.platform -e '(map (lambda (P) (display ":")(display P)) (repository-eath))(newline)');
         echo CHICKEN_REPOSITORY_PATH=$CHICKEN_REPOSITORY_PATH
         ./configure --enable-maintainer-mode;
         make all;
