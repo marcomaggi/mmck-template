@@ -48,10 +48,6 @@ AC_CACHE_SAVE
 
 #### external libraries
 
-PKG_PREREQ([0.29])
-PKG_INSTALLDIR
-MMUX_CHECK_PKG_CONFIG_MACROS
-
 MMUX_CHICKEN_SCHEME
 MMUX_CHICKEN_CHECK_LIBRARY([COOPS],[coops])
 MMUX_CHICKEN_CHECK_LIBRARY([COOPS_PRIMITIVE_OBJECTS],[coops-primitive-objects])
@@ -65,8 +61,6 @@ AC_CACHE_SAVE
 #### finish
 
 AC_CONFIG_FILES([Makefile]
-   [meta/scripts/mmck-template.pc]
-   [meta/slackware/slack-desc]
    [lib/config.scm])
 MMUX_OUTPUT
 AC_OUTPUT

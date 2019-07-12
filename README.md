@@ -13,11 +13,11 @@ The  library targets  POSIX systems.   To  run the  tests: this  package
 depends upon the package MMCK Checks.
 
 The package uses the GNU Autotools and it is tested, using Travis CI, on
-both Ubuntu GNU+Linux  systems and OS X systems.  The  package relies on
-`pkg-config` to find the dependencies installed on the system.
+both Ubuntu GNU+Linux  systems and OS X systems.
 
-The last time  the maintainer bothered to update this  paragraph: he had
-tested CHICKEN 5.0.0.
+This package  should work  with CHICKEN  version 5+;  the last  time the
+maintainer  bothered to  update this  paragraph: he  had tested  CHICKEN
+5.1.0.
 
 ## License
 
