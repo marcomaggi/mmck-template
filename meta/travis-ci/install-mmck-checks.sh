@@ -46,7 +46,7 @@ function main () {
     fi
 
     script_verbose './configure --prefix="%s" --enable-maintainer-mode' "$prefix"
-    if ! ./configure --prefix="$prefix" --enable-maintainer-mode
+    if ! ./configure --prefix="$prefix" --libdir="$libdir" --enable-maintainer-mode
     then script_error 'error configuring %s' "$STEM"
     fi
 
