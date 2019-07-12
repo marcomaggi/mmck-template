@@ -22,8 +22,8 @@ then libdir=${prefix}/lib64
 else libdir=${prefix}/lib
 fi
 
-CHICKEN_VERSION=$(csi -release)
-export CHICKEN_REPOSITORY_PATH=${libdir}/chicken/$CHICKEN_VERSION
+#CHICKEN_VERSION=$(csi -release)
+export CHICKEN_REPOSITORY_PATH=$(csi -R chicken.platform -R srfi-13 -e '(display (string-join (repository-path) ":"))(newline)')
 
 function main () {
     script_verbose 'wget "%s" --no-check-certificate -O "%s"' "$SOURCE_URI" "$LOCAL_ARCHIVE"
