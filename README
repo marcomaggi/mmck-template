@@ -25,8 +25,9 @@ that  build  and  install  CHICKEN language  libraries.   CHICKEN  is  a
 Scheme-to-C compiler supporting the language  features as defined in the
 ``Revised^5 Report on Scheme''.
 
-  The library  targets POSIX  systems.  To run  the tests:  this package
-depends upon the package MMCK Checks.
+  The  package targets  POSIX  systems.  The  package  depends upon  the
+CHICKEN eggs:  coops.  To run the  tests: this package depends  upon the
+package MMCK Checks.
 
   The package uses the GNU Autotools  and it is tested, using Travis CI,
 on both Ubuntu  GNU+Linux systems and OS X systems.
