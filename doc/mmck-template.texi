@@ -78,7 +78,7 @@
 @c ------------------------------------------------------------
 
 @copying
-This document describes version @value{VERSION} of @value{PACKAGE}, a @chicken{} language library
+This document describes version @value{VERSION} of @value{PACKAGE}, a @chicken{} language package
 implementing a template library.  @chicken{} is a Scheme--to--C compiler supporting the language
 features as defined in the ``Revised^5 Report on Scheme''.
 
