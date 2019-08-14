@@ -86,7 +86,7 @@ MMCK_TEMPLATE_TEMP_FILES		+= \
 	lib/mmck.template.version.lock				\
 	lib/mmck.template.version.stamp
 
-# A compiler  invokation to build  an object file, also  generates the
+# A compiler  invocation to build  an object file, also  generates the
 # source  file for  the import  library; a  single rule  generates two
 # targets.  We implement  the rules as suggested  in the documentation
 # of GNU Automake, node "Multiple Outputs".
@@ -97,7 +97,8 @@ MMCK_TEMPLATE_TEMP_FILES		+= \
 lib/mmck.template.version.stamp: lib/mmck.template.version.scm $(MMCK_OBJECTS_DEPS)
 	@rm -f lib/mmck.template.version.temp
 	@touch lib/mmck.template.version.temp
-	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.version.$(OBJEXT) $(<) -prologue lib/config.scm
+	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.version.$(OBJEXT) $(<) -prologue lib/config.scm \
+		-emit-types-file lib/mmck.template.version.types
 	@$(MV) mmck.template.version.import.scm lib/mmck.template.version.import.scm
 	@mv -f lib/mmck.template.version.temp $@
 
@@ -144,7 +145,8 @@ MMCK_TEMPLATE_ALPHA_DEPS = \
 lib/mmck.template.alpha.stamp: lib/mmck.template.alpha.scm $(MMCK_TEMPLATE_ALPHA_DEPS)
 	@rm -f lib/mmck.template.alpha.temp
 	@touch lib/mmck.template.alpha.temp
-	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.alpha.$(OBJEXT) $(<)
+	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.alpha.$(OBJEXT) $(<) \
+		-emit-types-file lib/mmck.template.alpha.types
 	@$(MV) mmck.template.alpha.import.scm lib/mmck.template.alpha.import.scm
 	@mv -f lib/mmck.template.alpha.temp $@
 
@@ -175,9 +177,9 @@ lib/mmck.template.alpha.import.$(MMCK_SOEXT): lib/mmck.template.alpha.import.scm
 
 #### library (mmck template): main module
 
-MMCK_TEMPLATE_MODULES		+= lib/mmck.template.scm
-MMCK_TEMPLATE_RUNTIME_OBJECTS	+= lib/mmck.template.$(OBJEXT)
-MMCK_TEMPLATE_IMPORT_SOURCES	+= lib/mmck.template.import.scm
+MMCK_TEMPLATE_MODULES			+= lib/mmck.template.scm
+MMCK_TEMPLATE_RUNTIME_OBJECTS		+= lib/mmck.template.$(OBJEXT)
+MMCK_TEMPLATE_IMPORT_SOURCES		+= lib/mmck.template.import.scm
 MMCK_TEMPLATE_IMPORT_SHARED_LIBS	+= lib/mmck.template.import.$(MMCK_SOEXT)
 MMCK_TEMPLATE_TEMP_FILES		+= \
 	lib/mmck.template.temp				\
@@ -190,7 +192,8 @@ MMCK_TEMPLATE_TEMP_FILES		+= \
 lib/mmck.template.stamp: lib/mmck.template.scm $(MMCK_TEMPLATE_IMPORT_DEPS) $(MMCK_OBJECTS_DEPS)
 	@rm -f lib/mmck.template.temp
 	@touch lib/mmck.template.temp
-	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.$(OBJEXT) $(<)
+	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.$(OBJEXT) $(<) \
+		-emit-types-file lib/mmck.template.types
 	@$(MV) mmck.template.import.scm lib/mmck.template.import.scm
 	@mv -f lib/mmck.template.temp $@
 
@@ -225,7 +228,7 @@ EXTRA_DIST	+= $(MMCK_TEMPLATE_MODULES)
 
 CLEANFILES	+= \
 	$(MMCK_TEMPLATE_RUNTIME_SHARED_LIBS)	\
-	$(MMCK_TEMPLATE_RUNTIME_OBJECTS)		\
+	$(MMCK_TEMPLATE_RUNTIME_OBJECTS)	\
 	$(MMCK_TEMPLATE_IMPORT_SHARED_LIBS)	\
 	$(MMCK_TEMPLATE_IMPORT_SOURCES)		\
 	$(MMCK_TEMPLATE_TEMP_FILES)
