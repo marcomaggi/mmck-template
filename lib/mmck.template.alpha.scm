@@ -31,11 +31,14 @@
 
 (module (mmck.template.alpha)
     (the-func)
-  (import (scheme))
+  (import (scheme)
+	  (only (chicken type)
+		:))
 
 
 ;;;; miscellaneous functions
 
+(: the-func (-> true))
 (define (the-func)
   #t)
 

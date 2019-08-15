@@ -68,6 +68,22 @@ MMCK_TEMPLATE_IMPORT_SHARED_LIBS	=
 MMCK_TEMPLATE_RUNTIME_SHARED_LIBS	= \
 	lib/mmck.template.$(MMCK_SOEXT)
 
+## --------------------------------------------------------------------
+
+# This is  a list of types  specification files, one for  each module.
+# They are  *not* installed.   They are  concatenated to  generate the
+# globl types file.
+#
+MMCK_TEMPLATE_MODULE_TYPES_FILES	=
+
+# This is  a list of the  types specification files.  To  be installed
+# along with shared libraries.
+#
+MMCK_TEMPLATE_TYPES_FILES		= \
+	lib/mmck.template.types
+
+## --------------------------------------------------------------------
+
 # Temporary  files  we need  for  parallel  builds, ".temp",  ".lock",
 # ".stamp".
 #
@@ -81,9 +97,10 @@ MMCK_TEMPLATE_RUNTIME_OBJECTS		+= lib/mmck.template.version.$(OBJEXT)
 MMCK_TEMPLATE_IMPORT_SOURCES		+= lib/mmck.template.version.import.scm
 MMCK_TEMPLATE_IMPORT_DEPS		+= lib/mmck.template.version.import.$(MMCK_SOEXT)
 MMCK_TEMPLATE_IMPORT_SHARED_LIBS	+= lib/mmck.template.version.import.$(MMCK_SOEXT)
+MMCK_TEMPLATE_MODULE_TYPES_FILES	+= lib/mmck.template.version.types.scm
 MMCK_TEMPLATE_TEMP_FILES		+= \
-	lib/mmck.template.version.temp				\
-	lib/mmck.template.version.lock				\
+	lib/mmck.template.version.temp		\
+	lib/mmck.template.version.lock		\
 	lib/mmck.template.version.stamp
 
 # A compiler  invocation to build  an object file, also  generates the
@@ -98,9 +115,11 @@ lib/mmck.template.version.stamp: lib/mmck.template.version.scm $(MMCK_OBJECTS_DE
 	@rm -f lib/mmck.template.version.temp
 	@touch lib/mmck.template.version.temp
 	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.version.$(OBJEXT) $(<) -prologue lib/config.scm \
-		-emit-types-file lib/mmck.template.version.types
+		-emit-types-file lib/mmck.template.version.types.scm
 	@$(MV) mmck.template.version.import.scm lib/mmck.template.version.import.scm
 	@mv -f lib/mmck.template.version.temp $@
+
+lib/mmck.template.version.types.scm: lib/mmck.template.version.stamp
 
 lib/mmck.template.version.import.scm lib/mmck.template.version.$(OBJEXT): lib/mmck.template.version.stamp
 	@dry=; for f in x $$MAKEFLAGS; do \
@@ -134,6 +153,7 @@ MMCK_TEMPLATE_RUNTIME_OBJECTS		+= lib/mmck.template.alpha.$(OBJEXT)
 MMCK_TEMPLATE_IMPORT_SOURCES		+= lib/mmck.template.alpha.import.scm
 MMCK_TEMPLATE_IMPORT_DEPS		+= lib/mmck.template.alpha.import.$(MMCK_SOEXT)
 MMCK_TEMPLATE_IMPORT_SHARED_LIBS	+= lib/mmck.template.alpha.import.$(MMCK_SOEXT)
+MMCK_TEMPLATE_MODULE_TYPES_FILES	+= lib/mmck.template.alpha.types.scm
 MMCK_TEMPLATE_TEMP_FILES		+= \
 	lib/mmck.template.alpha.temp	\
 	lib/mmck.template.alpha.lock	\
@@ -146,9 +166,11 @@ lib/mmck.template.alpha.stamp: lib/mmck.template.alpha.scm $(MMCK_TEMPLATE_ALPHA
 	@rm -f lib/mmck.template.alpha.temp
 	@touch lib/mmck.template.alpha.temp
 	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.alpha.$(OBJEXT) $(<) \
-		-emit-types-file lib/mmck.template.alpha.types
+		-emit-types-file lib/mmck.template.alpha.types.scm
 	@$(MV) mmck.template.alpha.import.scm lib/mmck.template.alpha.import.scm
 	@mv -f lib/mmck.template.alpha.temp $@
+
+lib/mmck.template.alpha.types.scm: lib/mmck.template.alpha.stamp
 
 lib/mmck.template.alpha.import.scm lib/mmck.template.alpha.$(OBJEXT): lib/mmck.template.alpha.stamp
 	@dry=; for f in x $$MAKEFLAGS; do \
@@ -182,8 +204,8 @@ MMCK_TEMPLATE_RUNTIME_OBJECTS		+= lib/mmck.template.$(OBJEXT)
 MMCK_TEMPLATE_IMPORT_SOURCES		+= lib/mmck.template.import.scm
 MMCK_TEMPLATE_IMPORT_SHARED_LIBS	+= lib/mmck.template.import.$(MMCK_SOEXT)
 MMCK_TEMPLATE_TEMP_FILES		+= \
-	lib/mmck.template.temp				\
-	lib/mmck.template.lock				\
+	lib/mmck.template.temp			\
+	lib/mmck.template.lock			\
 	lib/mmck.template.stamp
 
 # This is the main compilation unit and it defines the main module; it
@@ -192,8 +214,7 @@ MMCK_TEMPLATE_TEMP_FILES		+= \
 lib/mmck.template.stamp: lib/mmck.template.scm $(MMCK_TEMPLATE_IMPORT_DEPS) $(MMCK_OBJECTS_DEPS)
 	@rm -f lib/mmck.template.temp
 	@touch lib/mmck.template.temp
-	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.$(OBJEXT) $(<) \
-		-emit-types-file lib/mmck.template.types
+	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.template.$(OBJEXT) $(<)
 	@$(MV) mmck.template.import.scm lib/mmck.template.import.scm
 	@mv -f lib/mmck.template.temp $@
 
@@ -231,10 +252,14 @@ CLEANFILES	+= \
 	$(MMCK_TEMPLATE_RUNTIME_OBJECTS)	\
 	$(MMCK_TEMPLATE_IMPORT_SHARED_LIBS)	\
 	$(MMCK_TEMPLATE_IMPORT_SOURCES)		\
+	$(MMCK_TEMPLATE_MODULE_TYPES_FILES)	\
 	$(MMCK_TEMPLATE_TEMP_FILES)
 
 lib/mmck.template.$(MMCK_SOEXT): $(MMCK_TEMPLATE_RUNTIME_OBJECTS)
 	$(MMCK_LIB_ENV) $(CSC_LINK_LIBRARY) $(@) $(^)
+
+lib/mmck.template.types: $(MMCK_TEMPLATE_MODULE_TYPES_FILES)
+	cat $(MMCK_TEMPLATE_MODULE_TYPES_FILES) >$@
 
 
 #### shared libraries installation
@@ -249,6 +274,11 @@ MMCK_ALL_IMPORT_SHARED_LIBS	= \
 MMCK_ALL_RUNTIME_SHARED_LIBS	= \
 	$(MMCK_TEMPLATE_RUNTIME_SHARED_LIBS)
 
+# All the types specification files that we want to install.
+#
+MMCK_ALL_TYPES_FILES	= \
+	$(MMCK_TEMPLATE_TYPES_FILES)
+
 # These variables are parsed by GNU Automake to build the main library
 # targets and install them under the directory $(MMUX_CHICKEN_LIBDIR).
 #
@@ -261,7 +291,10 @@ MMCK_ALL_RUNTIME_SHARED_LIBS	= \
 # permissions 0644.
 #
 sharedlibdir		= $(MMUX_CHICKEN_LIBDIR)
-sharedlib_SCRIPTS	= $(MMCK_ALL_RUNTIME_SHARED_LIBS) $(MMCK_ALL_IMPORT_SHARED_LIBS)
+sharedlib_SCRIPTS	= \
+	$(MMCK_ALL_RUNTIME_SHARED_LIBS)		\
+	$(MMCK_ALL_IMPORT_SHARED_LIBS)		\
+	$(MMCK_ALL_TYPES_FILES)
 
 
 #### interface to "make check"
